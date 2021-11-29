@@ -4,6 +4,6 @@ import com.rastatech.secretrasta.dto.DonationRequest;
 
 public interface DonationService {
     void donate(Long wishId, Long donationId, DonationRequest amount);
-    int fetchWishDonations(Long wishId);
-    int fetchUserDonations(Long userId);
+    int fetchDonationsByWish(Long wishId);
+    int fetchDonationsByUser(Long userId);
 }

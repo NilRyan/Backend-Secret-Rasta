@@ -8,6 +8,6 @@ import java.util.List;
 public interface UserService {
     List<UserEntity> fetchUsers();
     UserEntity fetchUser(Long userId);
-    void updateUser(Long userId, UpdateUserRequest user);
+    UserEntity updateUser(Long userId, UpdateUserRequest user);
     void deleteUser(Long userId);
 }

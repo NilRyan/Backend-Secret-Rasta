@@ -30,11 +30,12 @@ public class UserEntity {
 
 
     private String email;
+    private String firstName;
+    private String lastName;
     private boolean enabled;
     private String passwordHash;
     private String username;
     private String info;
     private String rastaGemsBalance;
-    private String location;
     private String avatar;
 }
