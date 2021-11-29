@@ -3,9 +3,10 @@ package com.rastatech.secretrasta.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "donations")
@@ -13,4 +14,16 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DonationEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long donationId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WishEntity wish;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserEntity user;
+
+    @CreationTimestamp
+    private LocalDateTime transactionDate;
 }
