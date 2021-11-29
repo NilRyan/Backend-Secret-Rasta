@@ -32,5 +32,5 @@ public class WishEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private UserEntity user;
 }
