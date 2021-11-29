@@ -6,5 +6,4 @@ public class UpdateCommentRequest {
 
     @NotEmpty
     private String comment;
-
 }
