@@ -19,7 +19,7 @@ public class WishVoteEntity {
     private VoteType voteType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Long wishId;
+    private WishEntity wish;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;

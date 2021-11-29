@@ -19,7 +19,7 @@ public class CommentVoteEntity {
     private VoteType voteType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Long commentId;
+    private CommentEntity comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
