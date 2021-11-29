@@ -18,6 +18,8 @@ public class DonationEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long donationId;
 
+    private int amount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private WishEntity wish;
 
