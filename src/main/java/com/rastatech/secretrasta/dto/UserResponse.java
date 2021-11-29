@@ -9,8 +9,8 @@ public class UserResponse {
     private String email;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
     private String username;
     private String info;
-    private String location;
     private String avatar;
 }

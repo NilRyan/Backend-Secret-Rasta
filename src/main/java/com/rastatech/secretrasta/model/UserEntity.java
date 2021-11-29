@@ -32,6 +32,7 @@ public class UserEntity {
     private String email;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
     private boolean enabled;
     private String passwordHash;
     private String username;
