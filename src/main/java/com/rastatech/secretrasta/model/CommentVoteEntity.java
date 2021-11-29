@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "votes")
+@Table(name = "comment_votes")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VoteEntity {
+public class CommentVoteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class VoteEntity {
     private VoteType voteType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private PostEntity post;
+    private Long commentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
