@@ -37,6 +37,6 @@ public class UserEntity {
     private String passwordHash;
     private String username;
     private String info;
-    private String rastaGemsBalance;
+    private int rastaGemsBalance = 100;
     private String avatar;
 }
