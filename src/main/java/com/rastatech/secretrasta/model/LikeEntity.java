@@ -1,22 +1,14 @@
 package com.rastatech.secretrasta.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
-@Entity
-@Table(name = "wish_votes")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class WishVoteEntity {
 
+public class LikeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long voteId;
-    private VoteType voteType;
+    private Long likeId;
+
+    private boolean like;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private WishEntity wish;

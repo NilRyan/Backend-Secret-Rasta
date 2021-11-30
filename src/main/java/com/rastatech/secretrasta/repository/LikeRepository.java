@@ -1,9 +1,9 @@
 package com.rastatech.secretrasta.repository;
 
-import com.rastatech.secretrasta.model.CommentVoteEntity;
+import com.rastatech.secretrasta.model.LikeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommentVoteRepository extends JpaRepository<CommentVoteEntity, Long> {
+public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
 }

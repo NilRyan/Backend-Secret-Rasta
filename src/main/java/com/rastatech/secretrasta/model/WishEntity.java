@@ -23,7 +23,6 @@ public class WishEntity {
 
     private String imageUrl;
     private String description;
-    private String reasonForWish;
     private int rastagemsRequired;
     private int rastagemsDonated;
 
