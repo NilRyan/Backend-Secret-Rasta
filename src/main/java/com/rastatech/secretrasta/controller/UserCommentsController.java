@@ -25,10 +25,6 @@ public class UserCommentsController {
         return comments.stream().map(this::mapToCommentResponse).collect(Collectors.toList());
     }
 
-    @GetMapping("/{comment_id}")
-    public CommentResponse fetchCommentByUser(@PathVariable("user_id") Long userId, @PathVariable("comment_id") Long commentId) {
-        return mapToCommentResponse(commentService.fetchCommentByUser(userId, commentId));
-    }
     private CommentResponse mapToCommentResponse(CommentEntity comment) {
         return modelMapper.map(comment, CommentResponse.class);
     }

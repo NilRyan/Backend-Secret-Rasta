@@ -10,13 +10,11 @@ import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +26,14 @@ public class CommentServiceImpl implements CommentService {
     private ModelMapper modelMapper;
 
     @Override
-    public CommentEntity createComment(Long wishId, CommentRequest comment) {
-        return null;
+    public CommentEntity createComment(Long userId, Long wishId, CommentRequest comment) {
+        CommentEntity commentEntity = new CommentEntity();
+        WishEntity wish = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        commentEntity.setComment(comment.getComment());
+        commentEntity.setWish(wish);
+        commentEntity.setUser(user);
+        return commentRepository.save(commentEntity);
     }
 
     @Override
@@ -45,14 +49,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void updateComment(Long commentId, UpdateCommentRequest updateCommentRequest) {
+    public void updateComment(Long wishId, Long commentId, UpdateCommentRequest updateCommentRequest) {
         CommentEntity comment = commentRepository.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         modelMapper.map(updateCommentRequest, comment);
         commentRepository.save(comment);
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long wishId, Long commentId) {
         commentRepository.deleteById(commentId);
     }
 }
