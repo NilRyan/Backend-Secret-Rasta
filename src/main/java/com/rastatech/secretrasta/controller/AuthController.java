@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponse>saveUser(@RequestBody NewUserRequest user) {
+    public ResponseEntity<UserResponse>saveUser(@Valid @RequestBody NewUserRequest user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/signup").toUriString());
         return ResponseEntity.created(uri).body(convertToResponse(userRepository.save(

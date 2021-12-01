@@ -32,14 +32,19 @@ public class UserEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-
+    @Column(unique = true)
     private String email;
     private String firstName;
     private String lastName;
+
+    @Column(unique = true)
     private String phoneNumber;
     private boolean enabled = true;
     private String password;
+
+    @Column(unique = true)
     private String username;
+
     private String info;
     private int rastaGemsBalance = 100;
     private String avatar;
