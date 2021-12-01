@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class WishVoteResponse {
 
+    private Long voteId;
     private VoteType voteType;
 }

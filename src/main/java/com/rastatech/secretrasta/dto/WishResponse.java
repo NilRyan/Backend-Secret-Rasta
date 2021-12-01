@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class WishResponse {
 
+    private Long wishId;
     private String wishName;
     private String imageUrl;
     private String description;

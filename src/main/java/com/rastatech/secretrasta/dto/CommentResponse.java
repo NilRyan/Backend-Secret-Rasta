@@ -2,6 +2,7 @@ package com.rastatech.secretrasta.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.rastatech.secretrasta.model.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,5 +13,7 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentResponse {
 
+    private Long commentId;
     private String comment;
+    private UserResponse user;
 }
