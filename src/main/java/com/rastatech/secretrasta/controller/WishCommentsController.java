@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WishCommentsController {
 
-    private ModelMapper modelMapper;
-    private CommentService commentService;
+    private final ModelMapper modelMapper;
+    private final CommentService commentService;
 
     @PostMapping("/{wish_id}/comments")
     public CommentResponse createComment(@PathVariable("user_id") Long userId,

@@ -11,7 +11,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LikeController {
 
-    private LikeService likeService;
+    private final LikeService likeService;
 
     @PostMapping("/{wish_id}")
     public void like(@PathVariable("wish_id") Long wishId,

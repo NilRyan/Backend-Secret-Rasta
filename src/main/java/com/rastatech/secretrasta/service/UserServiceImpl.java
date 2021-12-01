@@ -15,8 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public List<UserEntity> fetchUsers() {
@@ -39,5 +39,10 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long userId) {
         if (!userRepository.existsById(userId)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public UserEntity fetchUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

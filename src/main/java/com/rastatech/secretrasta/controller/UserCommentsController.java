@@ -3,6 +3,7 @@ package com.rastatech.secretrasta.controller;
 import com.rastatech.secretrasta.dto.CommentResponse;
 import com.rastatech.secretrasta.model.CommentEntity;
 import com.rastatech.secretrasta.service.CommentService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +15,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users/{user_id}/comments")
+@RequiredArgsConstructor
 public class UserCommentsController {
 
-    private ModelMapper modelMapper;
-    private CommentService commentService;
+    private final ModelMapper modelMapper;
+    private final CommentService commentService;
 
     @GetMapping
     public List<CommentResponse> fetchCommentsByUser(@PathVariable("user_id") Long userId) {
