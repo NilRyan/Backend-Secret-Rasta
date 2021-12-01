@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SecretrastaApplication {
+public class SecretRastaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SecretrastaApplication.class, args);
+		SpringApplication.run(SecretRastaApplication.class, args);
 	}
-
 }
