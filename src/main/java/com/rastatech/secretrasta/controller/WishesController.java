@@ -3,9 +3,11 @@ package com.rastatech.secretrasta.controller;
 import com.rastatech.secretrasta.dto.*;
 import com.rastatech.secretrasta.model.CommentEntity;
 import com.rastatech.secretrasta.model.WishEntity;
+import com.rastatech.secretrasta.service.UserService;
 import com.rastatech.secretrasta.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,16 +21,19 @@ public class WishesController {
 
     private final ModelMapper modelMapper;
     private final WishService wishService;
+    private final UserService userService;
 
     @PostMapping
-    public WishResponse createWish(@PathVariable("user_id") Long userId,
+    public WishResponse createWish(Authentication auth,
                                    @Valid @RequestBody WishRequest wishRequest) {
+        String username = (String) auth.getPrincipal();
+        Long userId = userService.fetchUserByUsername(username).getUserId();
         WishEntity wish = wishService.createWish(userId, wishRequest);
         return mapToWishResponse(wish);
     }
 
     @GetMapping
-    public List<WishResponse> fetchWishes(@PathVariable("user_id") Long userId) {
+    public List<WishResponse> fetchWishes() {
         List<WishEntity> wishes = wishService.fetchWishes();
         return wishes.stream().map(this::mapToWishResponse).collect(Collectors.toList());
     }
