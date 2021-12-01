@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserResponse {
 
+    private Long userId;
     private String email;
     private String firstName;
     private String lastName;
