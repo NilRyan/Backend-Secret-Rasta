@@ -20,10 +20,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-    private CommentRepository commentRepository;
-    private WishRepository wishRepository;
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    private final CommentRepository commentRepository;
+    private final WishRepository wishRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public CommentEntity createComment(Long userId, Long wishId, CommentRequest comment) {

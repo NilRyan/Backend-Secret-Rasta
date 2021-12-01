@@ -15,9 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService {
 
-    private LikeRepository likeRepository;
-    private WishRepository wishRepository;
-    private UserRepository userRepository;
+    private final LikeRepository likeRepository;
+    private final WishRepository wishRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void like(Long wishId, Long userId) {

@@ -10,6 +10,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Table(name = "users")
@@ -33,10 +37,13 @@ public class UserEntity {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private boolean enabled;
+    private boolean enabled = true;
     private String passwordHash;
     private String username;
     private String info;
     private int rastaGemsBalance = 100;
     private String avatar;
+
+    @ManyToMany(fetch = EAGER)
+    private Collection<Role> roles = new ArrayList<>();
 }

@@ -20,9 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DonationServiceImpl implements DonationService {
 
-    private DonationRepository donationRepository;
-    private WishRepository wishRepository;
-    private UserRepository userRepository;
+    private final DonationRepository donationRepository;
+    private final WishRepository wishRepository;
+    private final UserRepository userRepository;
 
     /*
         TODO

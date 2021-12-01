@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class VoteController {
 
-    private ModelMapper modelMapper;
-    private WishVoteService wishVoteService;
+    private final ModelMapper modelMapper;
+    private final WishVoteService wishVoteService;
 
     @PostMapping
     public void vote(@PathVariable("user_id") Long userId,
