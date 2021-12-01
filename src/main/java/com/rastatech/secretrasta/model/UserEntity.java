@@ -38,7 +38,7 @@ public class UserEntity {
     private String lastName;
     private String phoneNumber;
     private boolean enabled = true;
-    private String passwordHash;
+    private String password;
     private String username;
     private String info;
     private int rastaGemsBalance = 100;
