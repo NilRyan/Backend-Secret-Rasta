@@ -20,9 +20,9 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class WishServiceImpl implements WishService {
 
-    private WishRepository wishRepository;
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    private final WishRepository wishRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public WishEntity createWish(Long userId, WishRequest wish) {

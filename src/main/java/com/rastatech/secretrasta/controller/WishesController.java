@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WishesController {
 
-    private ModelMapper modelMapper;
-    private WishService wishService;
+    private final ModelMapper modelMapper;
+    private final WishService wishService;
 
     @PostMapping
     public WishResponse createWish(@PathVariable("user_id") Long userId,

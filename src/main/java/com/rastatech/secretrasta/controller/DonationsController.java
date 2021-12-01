@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/donations")
 @RequiredArgsConstructor
 public class DonationsController {
-    private DonationService donationService;
+    private final DonationService donationService;
 
     @GetMapping("/{wish_id}")
     public int fetchDonationsByWish(@PathVariable("wish_id") Long wishId) {

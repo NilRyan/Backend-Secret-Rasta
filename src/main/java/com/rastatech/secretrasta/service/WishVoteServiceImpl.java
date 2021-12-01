@@ -19,10 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WishVoteServiceImpl implements WishVoteService {
 
-    private WishRepository wishRepository;
-    private UserRepository userRepository;
-    private WishVoteRepository wishVoteRepository;
-    private ModelMapper modelMapper;
+    private final WishRepository wishRepository;
+    private final UserRepository userRepository;
+    private final WishVoteRepository wishVoteRepository;
 
     @Override
     public void vote(Long userId, Long wishId, WishVoteRequest vote) {

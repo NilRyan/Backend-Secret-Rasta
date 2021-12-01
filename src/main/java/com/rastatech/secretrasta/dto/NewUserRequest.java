@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserRequest {
+public class NewUserRequest {
 
     @Email(regexp = ".+@.+\\..+")
     @NotBlank
@@ -28,6 +28,9 @@ public class UserRequest {
     @Size(min = 11, max = 11)
     @Pattern(regexp = "[0-9]+")
     private String phoneNumber;
+
+    @NotEmpty
+    private String password;
 
     @NotEmpty
     private String username;
