@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface WishRepository extends CrudRepository<WishEntity, Long> {
-    List<WishEntity> findAllByUserEntity(UserEntity user);
+    List<WishEntity> findAllByUser(UserEntity user);
 }

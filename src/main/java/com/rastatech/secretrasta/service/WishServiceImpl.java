@@ -6,7 +6,6 @@ import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.model.WishEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.repository.WishRepository;
-import com.rastatech.secretrasta.repository.WishVoteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,7 +37,7 @@ public class WishServiceImpl implements WishService {
     @Override
     public List<WishEntity> fetchWishesByUser(Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return wishRepository.findAllByUserEntity(user);
+        return wishRepository.findAllByUser(user);
     }
 
     @Override

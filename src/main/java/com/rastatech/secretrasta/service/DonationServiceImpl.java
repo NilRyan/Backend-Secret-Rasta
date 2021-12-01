@@ -35,7 +35,7 @@ public class DonationServiceImpl implements DonationService {
     public void donate(Long wishId, Long userId, DonationRequest donation) {
         WishEntity wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        List<DonationEntity> donations = donationRepository.findByWishEntity(wish);
+        List<DonationEntity> donations = donationRepository.findByWish(wish);
         UserEntity toUser = wish.getUser();
         UserEntity fromUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -62,7 +62,7 @@ public class DonationServiceImpl implements DonationService {
     public int fetchDonationsByWish(Long wishId) {
         WishEntity wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        List<DonationEntity> donations = donationRepository.findByWishEntity(wish);
+        List<DonationEntity> donations = donationRepository.findByWish(wish);
         return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
     }
 
@@ -70,7 +70,7 @@ public class DonationServiceImpl implements DonationService {
     public int fetchDonationsByUser(Long userId) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        List<DonationEntity> donations = donationRepository.findByUserEntity(user);
+        List<DonationEntity> donations = donationRepository.findByUser(user);
         return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
     }
 }

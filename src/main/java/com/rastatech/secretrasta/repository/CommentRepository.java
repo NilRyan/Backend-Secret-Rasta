@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends CrudRepository<CommentEntity, Long> {
-    List<CommentEntity> findByWishEntity(WishEntity entity);
-    List<CommentEntity> findByUserEntity(UserEntity user);
+    List<CommentEntity> findByWish(WishEntity entity);
+    List<CommentEntity> findByUser(UserEntity user);
 }

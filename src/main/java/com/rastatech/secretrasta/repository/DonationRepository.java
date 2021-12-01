@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface DonationRepository extends JpaRepository<DonationEntity, Long> {
-    List<DonationEntity> findByWishEntity(WishEntity wish);
-    List<DonationEntity> findByUserEntity(UserEntity user);
+    List<DonationEntity> findByWish(WishEntity wish);
+    List<DonationEntity> findByUser(UserEntity user);
 
 }

@@ -16,7 +16,7 @@ public class LikeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long likeId;
 
-    private boolean like = true;
+    private boolean like;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private WishEntity wish;

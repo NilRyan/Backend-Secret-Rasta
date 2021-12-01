@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface WishVoteRepository extends JpaRepository<WishVoteEntity, Long> {
-    List<WishVoteEntity> findAllByWishEntity(WishEntity wish);
+    List<WishVoteEntity> findAllByWish(WishEntity wish);
 }

@@ -39,13 +39,13 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentEntity> fetchCommentsByWish(Long wishId) {
         WishEntity wish = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return commentRepository.findByWishEntity(wish);
+        return commentRepository.findByWish(wish);
     }
 
     @Override
     public List<CommentEntity> fetchCommentsByUser(Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return commentRepository.findByUserEntity(user);
+        return commentRepository.findByUser(user);
     }
 
     @Override
