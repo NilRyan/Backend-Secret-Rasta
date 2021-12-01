@@ -6,9 +6,13 @@ import com.rastatech.secretrasta.model.WishEntity;
 import com.rastatech.secretrasta.repository.LikeRepository;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.repository.WishRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+@Service
+@RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService {
 
     private LikeRepository likeRepository;

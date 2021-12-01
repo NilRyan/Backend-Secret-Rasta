@@ -6,14 +6,18 @@ import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.model.WishEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.repository.WishRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Service
+@RequiredArgsConstructor
 public class WishServiceImpl implements WishService {
 
     private WishRepository wishRepository;
