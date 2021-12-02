@@ -10,6 +10,7 @@ import com.rastatech.secretrasta.dto.UserResponse;
 import com.rastatech.secretrasta.model.Role;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
+import com.rastatech.secretrasta.service.RoleService;
 import com.rastatech.secretrasta.service.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
@@ -44,20 +46,17 @@ public class AuthController {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponse>saveUser(@RequestBody NewUserRequest user) {
+    public ResponseEntity<UserResponse>saveUser(@Valid @RequestBody NewUserRequest user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/signup").toUriString());
-        return ResponseEntity.created(uri).body(convertToResponse(userRepository.save(
-                modelMapper.map(user, UserEntity.class))));
+        UserEntity userEntity = userRepository.save(modelMapper.map(user, UserEntity.class));
+        roleService.addRoleToUser(user.getUsername(), "ROLE_USER");
+        return ResponseEntity.created(uri).body(convertToResponse(userEntity));
     }
-
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-//        return null;
-//    }
 
     @PostMapping("/refresh/token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -95,13 +94,20 @@ public class AuthController {
         }
     }
 
-//    @PostMapping("/logout")
-//    public ResponseEntity<?> logout(@Valid @RequestBody LogoutRequest logoutRequest) {
-//        return null;
-//    }
-
     private UserResponse convertToResponse(UserEntity userEntity) {
         return modelMapper.map(userEntity, UserResponse.class);
+    }
+
+    @PostMapping("/role/save")
+    public ResponseEntity<Role>saveRole(@RequestBody Role role) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/role/save").toUriString());
+        return ResponseEntity.created(uri).body(roleService.saveRole(role));
+    }
+
+    @PostMapping("/role/addtouser")
+    public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUserForm form) {
+        roleService.addRoleToUser(form.getUsername(), form.getRoleName());
+        return ResponseEntity.ok().build();
     }
 }
 

@@ -4,8 +4,10 @@ import com.rastatech.secretrasta.dto.*;
 import com.rastatech.secretrasta.model.CommentEntity;
 import com.rastatech.secretrasta.model.WishVoteEntity;
 import com.rastatech.secretrasta.service.CommentService;
+import com.rastatech.secretrasta.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,11 +21,14 @@ public class WishCommentsController {
 
     private final ModelMapper modelMapper;
     private final CommentService commentService;
+    private final UserService userService;
 
     @PostMapping("/{wish_id}/comments")
-    public CommentResponse createComment(@PathVariable("user_id") Long userId,
+    public CommentResponse createComment(Authentication auth,
                                          @PathVariable("wish_id") Long wishId,
                                          @Valid @RequestBody CommentRequest comment) {
+        String username = (String) auth.getPrincipal();
+        Long userId = userService.fetchUserByUsername(username).getUserId();
         CommentEntity commentEntity = commentService.createComment(userId, wishId, comment);
         return mapToCommentResponse(commentEntity);
     }

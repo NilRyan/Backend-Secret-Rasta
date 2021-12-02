@@ -25,8 +25,7 @@ public class NewUserRequest {
     private String lastName;
 
     @NotEmpty
-    @Size(min = 11, max = 11)
-    @Pattern(regexp = "[0-9]+")
+    @Pattern(regexp = "[0-9]{11}")
     private String phoneNumber;
 
     @NotEmpty

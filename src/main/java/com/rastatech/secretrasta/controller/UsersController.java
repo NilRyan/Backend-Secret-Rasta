@@ -6,6 +6,7 @@ import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,13 +31,17 @@ public class UsersController {
         return convertToResponse(userService.fetchUser(userId));
     }
 
-    @PutMapping("/{user_id}")
-    public UserResponse updateUser(@PathVariable("user_id") Long userId, UpdateUserRequest updateUserRequest) {
-       return convertToResponse(userService.updateUser(userId, updateUserRequest));
+    @PutMapping
+    public UserResponse updateUser(Authentication auth, @RequestBody UpdateUserRequest updateUserRequest) {
+        String username = (String) auth.getPrincipal();
+        Long userId = userService.fetchUserByUsername(username).getUserId();
+        return convertToResponse(userService.updateUser(userId, updateUserRequest));
     }
 
-    @DeleteMapping("/{user_id}")
-    public void deleteUser(@PathVariable("user_id") Long userId) {
+    @DeleteMapping
+    public void deleteUser(Authentication auth) {
+        String username = (String) auth.getPrincipal();
+        Long userId = userService.fetchUserByUsername(username).getUserId();
         userService.deleteUser(userId);
     }
 
