@@ -45,7 +45,6 @@ public class UserEntity {
     @Column(unique = true)
     private String username;
 
-    private String info;
     private int rastaGemsBalance = 100;
     private String avatar;
 

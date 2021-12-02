@@ -10,13 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserResponse {
+public class WishPageResponse {
 
-    private Long userId;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private String username;
-    private String avatar;
+    private Long wishId;
+    private String wishName;
+    private String imageUrl;
+    private String description;
+    private int rastagemsRequired;
+    private int rastagemsCurrent;
+    private boolean liked;
+    private int upvotes;
+    private int downvotes;
 }

@@ -1,6 +1,7 @@
 package com.rastatech.secretrasta.controller;
 
 import com.rastatech.secretrasta.dto.UpdateWishRequest;
+import com.rastatech.secretrasta.dto.WishPageResponse;
 import com.rastatech.secretrasta.dto.WishRequest;
 import com.rastatech.secretrasta.dto.WishResponse;
 import com.rastatech.secretrasta.model.WishEntity;
@@ -9,6 +10,9 @@ import com.rastatech.secretrasta.service.UserService;
 import com.rastatech.secretrasta.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +42,8 @@ public class WishesController {
 
     @GetMapping
     public List<WishResponse> fetchWishes() {
-        List<WishEntity> wishes = wishService.fetchWishes();
+        Pageable sortedByName = PageRequest.of(0, 10, Sort.by("rastagemsDonated").descending());
+        List<WishEntity> wishes = wishService.fetchWishes(sortedByName);
         return wishes.stream().map(this::mapToWishResponse).collect(Collectors.toList());
     }
 
@@ -49,9 +54,11 @@ public class WishesController {
     }
 
     @GetMapping("/{wish_id}")
-    public WishResponse fetchWish(@PathVariable("wish_id") Long wishId) {
-        WishEntity wish = wishService.fetchWish(wishId);
-        return mapToWishResponse(wish);
+    public WishPageResponse fetchWish(@PathVariable("wish_id") Long wishId,
+                                      Authentication auth) {
+        String username = (String) auth.getPrincipal();
+        Long userId = userService.fetchUserByUsername(username).getUserId();
+        return wishService.fetchWishWithMoreDetails(wishId, userId);
     }
 
     @PutMapping("/{wish_id}")
