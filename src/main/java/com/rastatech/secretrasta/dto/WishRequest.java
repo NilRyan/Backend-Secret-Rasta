@@ -26,5 +26,5 @@ public class WishRequest {
 
     @NotEmpty
     @Pattern(regexp = "[0-9]+")
-    private int rastagemsRequired;
+    private Integer rastagemsRequired;
 }
