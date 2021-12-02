@@ -27,5 +27,6 @@ public class RoleServiceImpl implements RoleService {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
+        userRepository.save(user);
     }
 }

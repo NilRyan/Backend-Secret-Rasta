@@ -54,7 +54,7 @@ public class AuthController {
     public ResponseEntity<?> createUser(@Valid @RequestBody NewUserRequest user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/signup").toUriString());
-        UserEntity userEntity = userRepository.save(modelMapper.map(user, UserEntity.class));
+        userRepository.save(modelMapper.map(user, UserEntity.class));
         roleService.addRoleToUser(user.getUsername(), "ROLE_USER");
         return ResponseEntity.created(uri).build();
     }
