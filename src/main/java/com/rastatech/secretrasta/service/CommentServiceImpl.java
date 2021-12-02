@@ -59,4 +59,9 @@ public class CommentServiceImpl implements CommentService {
     public void deleteComment(Long wishId, Long commentId) {
         commentRepository.deleteById(commentId);
     }
+
+    @Override
+    public CommentEntity fetchComment(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
 }

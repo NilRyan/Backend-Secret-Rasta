@@ -3,12 +3,15 @@ package com.rastatech.secretrasta.controller;
 import com.rastatech.secretrasta.dto.*;
 import com.rastatech.secretrasta.model.CommentEntity;
 import com.rastatech.secretrasta.model.WishVoteEntity;
+import com.rastatech.secretrasta.repository.CommentRepository;
 import com.rastatech.secretrasta.service.CommentService;
 import com.rastatech.secretrasta.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -48,13 +51,19 @@ public class WishCommentsController {
     @PutMapping("/{wish_id}/comments/{comment_id}")
     public void updateComment(@PathVariable("wish_id") Long wishId,
                               @PathVariable("comment_id") Long commentId,
-                              @Valid @RequestBody UpdateCommentRequest comment) {
+                              @Valid @RequestBody UpdateCommentRequest comment,
+                              Authentication auth) {
+        if (!auth.getPrincipal().equals(commentService.fetchComment(commentId).getUser().getUsername()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         commentService.updateComment(wishId, commentId, comment);
     }
 
     @DeleteMapping("/{wish_id}/comments/{comment_id}")
     public void deleteComment(@PathVariable("wish_id") Long wishId,
-                              @PathVariable("comment_id") Long commentId) {
+                              @PathVariable("comment_id") Long commentId,
+                              Authentication auth) {
+        if (!auth.getPrincipal().equals(commentService.fetchComment(commentId).getUser().getUsername()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         commentService.deleteComment(wishId, commentId);
     }
 
