@@ -36,7 +36,4 @@ public class NewUserRequest {
 
     @NotEmpty
     private String info;
-
-    @NotEmpty
-    private String avatar;
 }
