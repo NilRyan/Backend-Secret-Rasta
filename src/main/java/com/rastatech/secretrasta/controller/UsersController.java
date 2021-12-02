@@ -9,7 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,6 +26,14 @@ public class UsersController {
     public List<UserResponse> fetchUsers() {
         List<UserEntity> users = userService.fetchUsers();
         return users.stream().map(this::convertToResponse).collect(Collectors.toList());
+    }
+
+    @GetMapping("/balance")
+    public Map<String, Integer> fetchRastagemBalance(Authentication auth) {
+        String username = (String) auth.getPrincipal();
+        Long userId = userService.fetchUserByUsername(username).getUserId();
+        int balance = userService.fetchBalance(userId);
+        return Collections.singletonMap("rasta_gems_balance", balance);
     }
 
     @GetMapping("/{user_id}")
