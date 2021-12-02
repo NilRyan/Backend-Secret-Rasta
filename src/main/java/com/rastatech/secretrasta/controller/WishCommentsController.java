@@ -1,9 +1,9 @@
 package com.rastatech.secretrasta.controller;
 
-import com.rastatech.secretrasta.dto.*;
+import com.rastatech.secretrasta.dto.CommentRequest;
+import com.rastatech.secretrasta.dto.CommentResponse;
+import com.rastatech.secretrasta.dto.UpdateCommentRequest;
 import com.rastatech.secretrasta.model.CommentEntity;
-import com.rastatech.secretrasta.model.WishVoteEntity;
-import com.rastatech.secretrasta.repository.CommentRepository;
 import com.rastatech.secretrasta.service.CommentService;
 import com.rastatech.secretrasta.service.UserService;
 import lombok.RequiredArgsConstructor;

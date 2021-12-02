@@ -51,12 +51,12 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody NewUserRequest user) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody NewUserRequest user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/signup").toUriString());
         UserEntity userEntity = userRepository.save(modelMapper.map(user, UserEntity.class));
         roleService.addRoleToUser(user.getUsername(), "ROLE_USER");
-        return ResponseEntity.created(uri).body(convertToResponse(userEntity));
+        return ResponseEntity.created(uri).build();
     }
 
     @PostMapping("/refresh/token")
