@@ -26,7 +26,6 @@ public class WishesController {
     private final ModelMapper modelMapper;
     private final WishService wishService;
     private final UserService userService;
-    private final WishRepository wishRepository;
 
     @PostMapping
     public WishResponse createWish(Authentication auth,
@@ -59,7 +58,7 @@ public class WishesController {
     public void updateWish(@PathVariable("wish_id") Long wishId,
                            @Valid @RequestBody UpdateWishRequest wish,
                            Authentication auth) {
-        if (!auth.getPrincipal().equals(wishRepository.findById(wishId).get().getUser().getUsername()))
+        if (!auth.getPrincipal().equals(wishService.fetchWish(wishId).getUser().getUsername()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         wishService.updateWish(wishId, wish);
     }
@@ -67,7 +66,7 @@ public class WishesController {
     @DeleteMapping("/{wish_id}")
     public void deleteWish(@PathVariable("wish_id") Long wishId,
                            Authentication auth) {
-        if (!auth.getPrincipal().equals(wishRepository.findById(wishId).get().getUser().getUsername()))
+        if (!auth.getPrincipal().equals(wishService.fetchWish(wishId).getUser().getUsername()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         wishService.deleteWish(wishId);
     }

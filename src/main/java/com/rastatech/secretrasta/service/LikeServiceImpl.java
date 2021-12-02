@@ -33,4 +33,9 @@ public class LikeServiceImpl implements LikeService {
     public void unlike(Long likeId) {
         likeRepository.deleteById(likeId);
     }
+
+    @Override
+    public LikeEntity fetchLike(Long likeId) {
+        return likeRepository.findById(likeId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
 }

@@ -12,4 +12,5 @@ public interface CommentService {
     List<CommentEntity> fetchCommentsByUser(Long userId);
     void updateComment(Long wishId, Long commentId, UpdateCommentRequest comment);
     void deleteComment(Long wishId, Long commentId);
+    CommentEntity fetchComment(Long commentId);
 }

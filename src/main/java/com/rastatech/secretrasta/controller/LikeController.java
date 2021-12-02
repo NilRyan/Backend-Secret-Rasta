@@ -18,7 +18,6 @@ import java.util.Map;
 public class LikeController {
 
     private final LikeService likeService;
-    private final LikeRepository likeRepository;
     private final UserService userService;
 
     @PostMapping("/{wish_id}")
@@ -30,7 +29,7 @@ public class LikeController {
 
     @DeleteMapping("/{like_id}")
     public void unlike(@PathVariable("like_id") Long likeId, Authentication auth) {
-        if (!auth.getPrincipal().equals(likeRepository.findById(likeId).get().getUser().getUsername()))
+        if (!auth.getPrincipal().equals(likeService.fetchLike(likeId).getUser().getUsername()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         likeService.unlike(likeId);
     }

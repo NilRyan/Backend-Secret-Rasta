@@ -25,7 +25,6 @@ public class VoteController {
     private final ModelMapper modelMapper;
     private final WishVoteService wishVoteService;
     private final UserService userService;
-    private final WishVoteRepository wishVoteRepository;
 
     @PostMapping("/{wish_id}")
     public void vote(Authentication auth,
@@ -40,14 +39,14 @@ public class VoteController {
     public void deleteVote(@PathVariable("wish_id") Long wishId,
                            @PathVariable("vote_id") Long voteId,
                            Authentication auth) {
-        if (!auth.getPrincipal().equals(wishVoteRepository.findById(voteId).get().getUser().getUsername()))
+        if (!auth.getPrincipal().equals(wishVoteService.fetchVote(voteId).getUser().getUsername()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         wishVoteService.deleteVote(wishId, voteId);
     }
 
     @GetMapping
     public List<WishVoteResponse> getAllVotes(@PathVariable("wish_id") Long wishId) {
-        List<WishVoteEntity> wishes = wishVoteService.getAllVotes(wishId);
+        List<WishVoteEntity> wishes = wishVoteService.fetchVotes(wishId);
         return wishes.stream().map(this::mapToWishVoteResponse).collect(Collectors.toList());
     }
 

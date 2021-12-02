@@ -25,7 +25,6 @@ public class WishCommentsController {
     private final ModelMapper modelMapper;
     private final CommentService commentService;
     private final UserService userService;
-    private final CommentRepository commentRepository;
 
     @PostMapping("/{wish_id}/comments")
     public CommentResponse createComment(Authentication auth,
@@ -54,7 +53,7 @@ public class WishCommentsController {
                               @PathVariable("comment_id") Long commentId,
                               @Valid @RequestBody UpdateCommentRequest comment,
                               Authentication auth) {
-        if (!auth.getPrincipal().equals(commentRepository.findById(commentId).get().getUser().getUsername()))
+        if (!auth.getPrincipal().equals(commentService.fetchComment(commentId).getUser().getUsername()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         commentService.updateComment(wishId, commentId, comment);
     }
@@ -63,7 +62,7 @@ public class WishCommentsController {
     public void deleteComment(@PathVariable("wish_id") Long wishId,
                               @PathVariable("comment_id") Long commentId,
                               Authentication auth) {
-        if (!auth.getPrincipal().equals(commentRepository.findById(commentId).get().getUser().getUsername()))
+        if (!auth.getPrincipal().equals(commentService.fetchComment(commentId).getUser().getUsername()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         commentService.deleteComment(wishId, commentId);
     }

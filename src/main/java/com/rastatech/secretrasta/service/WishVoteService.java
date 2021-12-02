@@ -8,5 +8,6 @@ import java.util.List;
 public interface WishVoteService {
     void vote(Long userId, Long wishId, WishVoteRequest vote);
     void deleteVote(Long wishId, Long voteId);
-    List<WishVoteEntity> getAllVotes(Long wishId);
+    List<WishVoteEntity> fetchVotes(Long wishId);
+    WishVoteEntity fetchVote(Long voteId);
 }
