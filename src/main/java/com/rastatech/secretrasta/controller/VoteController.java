@@ -26,7 +26,7 @@ public class VoteController {
     private final WishVoteService wishVoteService;
     private final UserService userService;
 
-    @PostMapping("/{wish_id}")
+    @PostMapping
     public void vote(Authentication auth,
                      @PathVariable("wish_id") Long wishId,
                      @Valid @RequestBody WishVoteRequest vote) {
