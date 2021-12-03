@@ -10,10 +10,13 @@ import java.util.List;
 
 public interface WishService {
     WishEntity createWish(Long userId, WishRequest wish);
-    List<WishEntity> fetchWishes(Pageable pageable);
+    List<WishPageResponse> fetchWishes(Pageable pageable);
     List<WishEntity> fetchWishesByUser(Long userId);
     WishEntity fetchWish(Long wishId);
     void updateWish(Long wishId, UpdateWishRequest wish);
     void deleteWish(Long wishId);
     WishPageResponse fetchWishWithMoreDetails(Long wishId, Long userId);
+    List<WishPageResponse> fetchWishesGrantedByUser(Long userId, Pageable pageable);
+    List<WishPageResponse> fetchLikedWishes(Long userId, Pageable pageable);
+    List<WishPageResponse> fetchDonatedWishes(Long userId);
 }

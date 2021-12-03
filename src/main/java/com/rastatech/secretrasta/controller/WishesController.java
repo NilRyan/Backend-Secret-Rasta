@@ -41,10 +41,9 @@ public class WishesController {
     }
 
     @GetMapping
-    public List<WishResponse> fetchWishes() {
-        Pageable sortedByName = PageRequest.of(0, 10, Sort.by("rastagemsDonated").descending());
-        List<WishEntity> wishes = wishService.fetchWishes(sortedByName);
-        return wishes.stream().map(this::mapToWishResponse).collect(Collectors.toList());
+    public List<WishPageResponse> fetchWishes() {
+        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("rastagemsDonated").descending());
+        return wishService.fetchWishes(sortedBy);
     }
 
     @GetMapping("/{user_id}")
@@ -59,6 +58,23 @@ public class WishesController {
         String username = (String) auth.getPrincipal();
         Long userId = userService.fetchUserByUsername(username).getUserId();
         return wishService.fetchWishWithMoreDetails(wishId, userId);
+    }
+
+    @GetMapping("/granted/{user_id}")
+    public List<WishPageResponse> fetchWishesGrantedByUser(@PathVariable("user_id") Long userId) {
+        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("rastagemsDonated").descending());
+        return wishService.fetchWishesGrantedByUser(userId, sortedBy);
+    }
+
+    @GetMapping("/liked/{user_id}")
+    public List<WishPageResponse> fetchLikedWishes(@PathVariable("user_id") Long userId) {
+        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("rastagemsDonated").descending());
+        return wishService.fetchLikedWishes(userId, sortedBy);
+    }
+
+    @GetMapping("/donated/{user_id}")
+    public List<WishPageResponse> fetchDonatedWishes(@PathVariable("user_id") Long userId) {
+        return wishService.fetchDonatedWishes(userId);
     }
 
     @PutMapping("/{wish_id}")

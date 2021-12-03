@@ -3,6 +3,7 @@ package com.rastatech.secretrasta.repository;
 import com.rastatech.secretrasta.model.DonationEntity;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.model.WishEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

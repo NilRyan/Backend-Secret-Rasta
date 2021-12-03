@@ -1,12 +1,14 @@
 package com.rastatech.secretrasta.service;
 
 import com.rastatech.secretrasta.dto.WishVoteRequest;
-import com.rastatech.secretrasta.model.*;
+import com.rastatech.secretrasta.model.UserEntity;
+import com.rastatech.secretrasta.model.VoteType;
+import com.rastatech.secretrasta.model.WishEntity;
+import com.rastatech.secretrasta.model.WishVoteEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.repository.WishRepository;
 import com.rastatech.secretrasta.repository.WishVoteRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

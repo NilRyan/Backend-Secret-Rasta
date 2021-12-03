@@ -5,7 +5,6 @@ import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.repository.RoleRepository;
 import com.rastatech.secretrasta.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
