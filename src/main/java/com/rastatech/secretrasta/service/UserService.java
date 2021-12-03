@@ -12,4 +12,5 @@ public interface UserService {
     UserEntity updateUser(Long userId, UpdateUserRequest user);
     void deleteUser(Long userId);
     UserEntity fetchUserByUsername(String username);
+    int fetchBalance(Long userId);
 }

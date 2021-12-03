@@ -33,7 +33,4 @@ public class NewUserRequest {
 
     @NotEmpty
     private String username;
-
-    @NotEmpty
-    private String info;
 }

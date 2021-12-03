@@ -24,6 +24,12 @@ public class LikeServiceImpl implements LikeService {
         LikeEntity likeEntity = new LikeEntity();
         WishEntity wish = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        LikeEntity existingLike = likeRepository.findByWishAndUser(wish, user);
+
+        if (existingLike != null) {
+            unlike(existingLike.getLikeId());
+        }
+
         likeEntity.setWish(wish);
         likeEntity.setUser(user);
         likeRepository.save(likeEntity);

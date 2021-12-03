@@ -1,5 +1,6 @@
 package com.rastatech.secretrasta.repository;
 
+import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.model.WishEntity;
 import com.rastatech.secretrasta.model.WishVoteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,5 @@ import java.util.List;
 @Repository
 public interface WishVoteRepository extends JpaRepository<WishVoteEntity, Long> {
     List<WishVoteEntity> findAllByWish(WishEntity wish);
+    WishVoteEntity findByWishAndUser(WishEntity wish, UserEntity user);
 }
