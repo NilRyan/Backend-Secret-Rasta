@@ -49,8 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int fetchBalance(Long userId) {
-        int balance = fetchUser(userId).getRastaGemsBalance() -
+        return fetchUser(userId).getRastaGemsBalance() -
                 donationService.fetchDonationsByUser(userId);
-        return balance;
     }
 }

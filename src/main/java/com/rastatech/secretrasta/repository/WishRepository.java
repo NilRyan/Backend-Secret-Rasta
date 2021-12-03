@@ -11,5 +11,6 @@ import java.util.List;
 @Repository
 public interface WishRepository extends CrudRepository<WishEntity, Long> {
     List<WishEntity> findAllByUser(UserEntity user);
-    Iterable<WishEntity> findAll(Pageable pageable);
+    List<WishEntity> findAll(Pageable pageable);
+    List<WishEntity> findAllWishesGrantedByUser(Long userId, Pageable pageable);
 }
