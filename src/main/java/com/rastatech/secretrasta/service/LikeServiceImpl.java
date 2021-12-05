@@ -28,11 +28,11 @@ public class LikeServiceImpl implements LikeService {
 
         if (existingLike != null) {
             unlike(existingLike.getLikeId());
+        } else {
+            likeEntity.setWish(wish);
+            likeEntity.setUser(user);
+            likeRepository.save(likeEntity);
         }
-
-        likeEntity.setWish(wish);
-        likeEntity.setUser(user);
-        likeRepository.save(likeEntity);
     }
 
     @Override

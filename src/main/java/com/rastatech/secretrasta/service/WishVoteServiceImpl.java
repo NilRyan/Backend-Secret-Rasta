@@ -11,6 +11,7 @@ import com.rastatech.secretrasta.repository.WishVoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -24,11 +25,17 @@ public class WishVoteServiceImpl implements WishVoteService {
     private final WishVoteRepository wishVoteRepository;
 
     @Override
+    @Transactional
     public void vote(Long userId, Long wishId, WishVoteRequest vote) {
         WishVoteEntity wishVote = new WishVoteEntity();
         WishEntity wish = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         VoteType voteType = vote.getVoteType();
+
+        /*
+            TODO
+                1. Refactor logic to make use of Optionals for code consistency
+         */
         WishVoteEntity existingVote = wishVoteRepository.findByWishAndUser(wish, user);
 
         if (existingVote == null) {
