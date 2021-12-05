@@ -13,25 +13,25 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/like")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class LikeController {
 
     private final LikeService likeService;
     private final UserService userService;
 
-    @PostMapping("/{wish_id}")
+    @PostMapping("/wishes/{wish_id}/like")
     public void like(@PathVariable("wish_id") Long wishId, Authentication auth) {
         String username = (String) auth.getPrincipal();
         Long userId = userService.fetchUserByUsername(username).getUserId();
         likeService.like(wishId, userId);
     }
 
-    @DeleteMapping("/{like_id}")
-    public void unlike(@PathVariable("like_id") Long likeId, Authentication auth) {
-        if (!auth.getPrincipal().equals(likeService.fetchLike(likeId).getUser().getUsername()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        likeService.unlike(likeId);
-    }
+//    @DeleteMapping("/like/{like_id}")
+//    public void unlike(@PathVariable("like_id") Long likeId, Authentication auth) {
+//        if (!auth.getPrincipal().equals(likeService.fetchLike(likeId).getUser().getUsername()))
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+//        likeService.unlike(likeId);
+//    }
 
 }
