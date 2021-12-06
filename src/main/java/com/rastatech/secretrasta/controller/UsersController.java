@@ -41,6 +41,13 @@ public class UsersController {
         return convertToResponse(userService.fetchUser(userId));
     }
 
+    @GetMapping("/own")
+    public UserResponse fetchOwnUser(Authentication auth) {
+        String username = (String) auth.getPrincipal();
+        Long userId = userService.fetchUserByUsername(username).getUserId();
+        return convertToResponse(userService.fetchUser(userId));
+    }
+
     @PutMapping
     public UserResponse updateUser(Authentication auth, @RequestBody UpdateUserRequest updateUserRequest) {
         String username = (String) auth.getPrincipal();
