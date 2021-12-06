@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
@@ -14,6 +16,7 @@ import javax.validation.constraints.Pattern;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DonationRequest {
 
-    @Pattern(regexp = "[0-9]+")
+    @NotNull
+    @Min(1)
     private int amount;
 }

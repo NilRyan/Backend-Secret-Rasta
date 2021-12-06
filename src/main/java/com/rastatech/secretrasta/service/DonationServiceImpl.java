@@ -34,13 +34,14 @@ public class DonationServiceImpl implements DonationService {
      */
     @Override
     @Transactional
-    public void donate(Long wishId, Long userId, DonationRequest donation) {
+    public void createDonation(Long wishId, String username, DonationRequest donation) {
         WishEntity wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        List<DonationEntity> donations = donationRepository.findByWish(wish);
         UserEntity toUser = wish.getUser();
-        UserEntity fromUser = userRepository.findById(userId)
+        UserEntity fromUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (toUser.equals(fromUser)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
         int max = wish.getRastagemsRequired();
         int current = wish.getRastagemsDonated();
         int fromUserBalance = fromUser.getRastaGemsBalance();

@@ -46,7 +46,7 @@ public class WishesController {
         return wishService.fetchWishes(sortedBy);
     }
 
-    @GetMapping("/own/{user_id}")
+    @GetMapping("/{user_id}")
     public List<WishResponse> fetchWishesByUser(@PathVariable("user_id") Long userId) {
         List<WishEntity> wishes = wishService.fetchWishesByUser(userId);
         return wishes.stream().map(this::mapToWishResponse).collect(Collectors.toList());

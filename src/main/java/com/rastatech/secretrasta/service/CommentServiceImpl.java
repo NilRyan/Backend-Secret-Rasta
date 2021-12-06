@@ -1,6 +1,7 @@
 package com.rastatech.secretrasta.service;
 
 import com.rastatech.secretrasta.dto.CommentRequest;
+import com.rastatech.secretrasta.dto.CommentResponse;
 import com.rastatech.secretrasta.dto.UpdateCommentRequest;
 import com.rastatech.secretrasta.model.CommentEntity;
 import com.rastatech.secretrasta.model.UserEntity;
@@ -63,5 +64,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentEntity fetchComment(Long commentId) {
         return commentRepository.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+    private CommentResponse mapToCommentResponse(CommentEntity comment) {
+        return modelMapper.map(comment, CommentResponse.class);
     }
 }
