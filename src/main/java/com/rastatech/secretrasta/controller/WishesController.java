@@ -42,7 +42,7 @@ public class WishesController {
 
     @GetMapping
     public List<WishPageResponse> fetchWishes() {
-        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("rastagemsDonated").descending());
+        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
         return wishService.fetchWishes(sortedBy);
     }
 
@@ -62,13 +62,13 @@ public class WishesController {
 
     @GetMapping("/granted/{user_id}")
     public List<WishPageResponse> fetchWishesGrantedByUser(@PathVariable("user_id") Long userId) {
-        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("rastagemsDonated").descending());
+        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
         return wishService.fetchWishesGrantedByUser(userId, sortedBy);
     }
 
     @GetMapping("/liked/{user_id}")
     public List<WishPageResponse> fetchLikedWishes(@PathVariable("user_id") Long userId) {
-        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("rastagemsDonated").descending());
+        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
         return wishService.fetchLikedWishes(userId, sortedBy);
     }
 
