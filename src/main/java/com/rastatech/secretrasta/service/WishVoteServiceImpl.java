@@ -36,7 +36,7 @@ public class WishVoteServiceImpl implements WishVoteService {
             TODO
                 1. Refactor logic to make use of Optionals for code consistency
          */
-        WishVoteEntity existingVote = wishVoteRepository.findByWishAndUser(wish, user);
+        WishVoteEntity existingVote = wishVoteRepository.findByWishAndUser(wish, user).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (existingVote == null) {
             wishVote.setVoteType(voteType);

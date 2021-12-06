@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
-    LikeEntity findByWishAndUser(WishEntity wish, UserEntity user);
+    Optional<LikeEntity> findByWishAndUser(WishEntity wish, UserEntity user);
+    boolean existsByWishAndUser(WishEntity wish, UserEntity user);
     List<LikeEntity> findByUser(UserEntity user, Pageable pageable);
 }

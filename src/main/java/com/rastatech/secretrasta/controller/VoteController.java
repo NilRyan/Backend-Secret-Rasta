@@ -35,14 +35,14 @@ public class VoteController {
         wishVoteService.vote(userId, wishId, vote);
     }
 
-    @DeleteMapping("/{vote_id}")
-    public void deleteVote(@PathVariable("wish_id") Long wishId,
-                           @PathVariable("vote_id") Long voteId,
-                           Authentication auth) {
-        if (!auth.getPrincipal().equals(wishVoteService.fetchVote(voteId).getUser().getUsername()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        wishVoteService.deleteVote(wishId, voteId);
-    }
+//    @DeleteMapping("/{vote_id}")
+//    public void deleteVote(@PathVariable("wish_id") Long wishId,
+//                           @PathVariable("vote_id") Long voteId,
+//                           Authentication auth) {
+//        if (!auth.getPrincipal().equals(wishVoteService.fetchVote(voteId).getUser().getUsername()))
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+//        wishVoteService.deleteVote(wishId, voteId);
+//    }
 
     @GetMapping
     public List<WishVoteResponse> getAllVotes(@PathVariable("wish_id") Long wishId) {

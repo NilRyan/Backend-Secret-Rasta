@@ -81,8 +81,7 @@ public class WishServiceImpl implements WishService {
         /* TODO - refactor to use jpa query like "existsBy" instead of fetching the whole vote entity
             -getLikeId() causes null pointer exception
          */
-        Long likeId = likeRepository.findByWishAndUser(wish, user).getLikeId();
-        wishPageResponse.setLiked(likeId != null);
+        wishPageResponse.setLiked(likeRepository.existsByWishAndUser(wish, user));
         int upvote = (int) wishVoteService.fetchVotes(wishId).stream().filter(a -> a.getVoteType().equals(VoteType.UPVOTE)).count();
         int downvote = (int) wishVoteService.fetchVotes(wishId).stream().filter(a -> a.getVoteType().equals(VoteType.DOWNVOTE)).count();
         wishPageResponse.setDownvotes(downvote);

@@ -24,7 +24,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void addRoleToUser(String username, String roleName) {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Role role = roleRepository.findByName(roleName);
+        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         user.getRoles().add(role);
         userRepository.save(user);
     }
