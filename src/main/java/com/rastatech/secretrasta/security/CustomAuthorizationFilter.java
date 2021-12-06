@@ -1,4 +1,4 @@
-package com.rastatech.secretrasta.securityfilter;
+package com.rastatech.secretrasta.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

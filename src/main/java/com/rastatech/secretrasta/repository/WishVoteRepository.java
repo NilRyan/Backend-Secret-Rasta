@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface WishVoteRepository extends JpaRepository<WishVoteEntity, Long> {
     List<WishVoteEntity> findAllByWish(WishEntity wish);
     Optional<WishVoteEntity> findByWishAndUser(WishEntity wish, UserEntity user);
+    boolean existsByWishAndUser(WishEntity wish, UserEntity user);
 }

@@ -68,19 +68,13 @@ public class WishServiceImpl implements WishService {
     public void deleteWish(Long wishId) {
         wishRepository.deleteById(wishId);
     }
-    /*
-        TODO
-            1. Decide where to map DTO, either on controller or service layer
-     */
+
     @Override
     public WishPageResponse fetchWishWithMoreDetails(Long wishId, Long userId) {
         WishPageResponse wishPageResponse = new WishPageResponse();
         WishEntity wish = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         modelMapper.map(wish, wishPageResponse);
         UserEntity user = fetchUser(userId);
-        /* TODO - refactor to use jpa query like "existsBy" instead of fetching the whole vote entity
-            -getLikeId() causes null pointer exception
-         */
         wishPageResponse.setLiked(likeRepository.existsByWishAndUser(wish, user));
         int upvote = (int) wishVoteService.fetchVotes(wishId).stream().filter(a -> a.getVoteType().equals(VoteType.UPVOTE)).count();
         int downvote = (int) wishVoteService.fetchVotes(wishId).stream().filter(a -> a.getVoteType().equals(VoteType.DOWNVOTE)).count();
