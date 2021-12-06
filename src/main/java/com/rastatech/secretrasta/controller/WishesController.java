@@ -68,7 +68,7 @@ public class WishesController {
 
     @GetMapping("/liked/{user_id}")
     public List<WishPageResponse> fetchLikedWishes(@PathVariable("user_id") Long userId) {
-        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
+        Pageable sortedBy = PageRequest.of(0, 10);
         return wishService.fetchLikedWishes(userId, sortedBy);
     }
 
