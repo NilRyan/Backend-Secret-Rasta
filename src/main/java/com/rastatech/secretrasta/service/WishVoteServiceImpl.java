@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,17 +33,21 @@ public class WishVoteServiceImpl implements WishVoteService {
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         VoteType voteType = vote.getVoteType();
 
-        WishVoteEntity existingVote = wishVoteRepository.findByWishAndUser(wish, user).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Optional<WishVoteEntity> existingVote = wishVoteRepository.findByWishAndUser(wish, user);
 
-        if (!wishVoteRepository.existsByWishAndUser(wish, user)) {
+        if (existingVote.isEmpty()) {
             wishVote.setVoteType(voteType);
             wishVote.setWish(wish);
             wishVote.setUser(user);
             wishVoteRepository.save(wishVote);
-        } else if (voteType != existingVote.getVoteType()) {
-            fetchVote(existingVote.getVoteId()).setVoteType(voteType);
-        } else {
-            deleteVote(wishId, existingVote.getVoteId());
+        }
+        else {
+            WishVoteEntity voteExtracted = existingVote.get();
+            if (voteType != voteExtracted.getVoteType()) {
+                fetchVote(voteExtracted.getVoteId()).setVoteType(voteType);
+            } else {
+                deleteVote(wishId, voteExtracted.getVoteId());
+            }
         }
     }
 
