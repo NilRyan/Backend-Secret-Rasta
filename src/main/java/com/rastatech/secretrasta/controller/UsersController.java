@@ -1,6 +1,7 @@
 package com.rastatech.secretrasta.controller;
 
 import com.rastatech.secretrasta.dto.UpdateUserRequest;
+import com.rastatech.secretrasta.dto.UserDetailsResponse;
 import com.rastatech.secretrasta.dto.UserResponse;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.service.UserService;
@@ -37,8 +38,8 @@ public class UsersController {
     }
 
     @GetMapping("/{user_id}")
-    public UserResponse fetchUser(@PathVariable("user_id") Long userId) {
-        return convertToResponse(userService.fetchUser(userId));
+    public UserDetailsResponse fetchUser(@PathVariable("user_id") Long userId) {
+        return convertToUserDetailsResponse(userService.fetchUser(userId));
     }
 
     @GetMapping("/own")
@@ -66,4 +67,7 @@ public class UsersController {
         return modelMapper.map(userEntity, UserResponse.class);
     }
 
+    private UserDetailsResponse convertToUserDetailsResponse(UserEntity userEntity) {
+        return modelMapper.map(userEntity, UserDetailsResponse.class);
+    }
 }
