@@ -27,18 +27,18 @@ public class UsersController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    @GetMapping
-    public List<UserResponse> fetchUsers(@RequestParam Optional<Integer> page,
-                                         @RequestParam Optional<Integer> limit,
-                                         @RequestParam Optional<String> sort,
-                                         @RequestParam Optional<Integer> direction) {
-        Pageable pageable = PageRequest.of(page.orElseGet(() -> 0),
-                limit.orElseGet(() -> 10),
-                Sort.by(sort.orElseGet(() -> "updatedAt"))
-                        .descending());
-        List<UserEntity> users = userService.fetchUsers();
-        return users.stream().map(this::convertToResponse).collect(Collectors.toList());
-    }
+//    @GetMapping
+//    public List<UserResponse> fetchUsers(@RequestParam Optional<Integer> page,
+//                                         @RequestParam Optional<Integer> limit,
+//                                         @RequestParam Optional<String> sort,
+//                                         @RequestParam Optional<Integer> direction) {
+//        Pageable pageable = PageRequest.of(page.orElseGet(() -> 0),
+//                limit.orElseGet(() -> 10),
+//                Sort.by(sort.orElseGet(() -> "updatedAt"))
+//                        .descending());
+//        List<UserEntity> users = userService.fetchUsers();
+//        return users.stream().map(this::convertToResponse).collect(Collectors.toList());
+//    }
 
     @GetMapping("/balance")
     public Map<String, Integer> fetchRastagemBalance(Authentication auth) {

@@ -42,22 +42,23 @@ public class DonationServiceImpl implements DonationService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (toUser.equals(fromUser)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        int max = wish.getRastagemsRequired();
-        int current = wish.getRastagemsDonated();
+        int rastaGemsRequired = wish.getRastagemsRequired();
+        int currentRastaGems = wish.getRastagemsDonated();
         int fromUserBalance = fromUser.getRastaGemsBalance();
         int toUserBalance = toUser.getRastaGemsBalance();
         int donationAmount = donation.getAmount();
         if (fromUserBalance < donationAmount) throw new NotEnoughGemsException();
-        if ((current + donationAmount) > max) {
-            int toFull = max - current;
+
+        if ((currentRastaGems + donationAmount) > rastaGemsRequired) {
+            int toFull = rastaGemsRequired - currentRastaGems;
             if (fromUserBalance < toFull) throw new NotEnoughGemsException();
             toUser.setRastaGemsBalance(toUserBalance + toFull);
             fromUser.setRastaGemsBalance(fromUserBalance - toFull);
-            wish.setRastagemsDonated(current + toFull);
+            wish.setRastagemsDonated(currentRastaGems + toFull);
         } else {
             toUser.setRastaGemsBalance(toUserBalance + donationAmount);
             fromUser.setRastaGemsBalance(fromUserBalance - donationAmount);
-            wish.setRastagemsDonated(current + donationAmount);
+            wish.setRastagemsDonated(currentRastaGems + donationAmount);
         }
     }
 

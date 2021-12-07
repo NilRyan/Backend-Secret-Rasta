@@ -5,7 +5,6 @@ import com.rastatech.secretrasta.dto.WishPageResponse;
 import com.rastatech.secretrasta.dto.WishRequest;
 import com.rastatech.secretrasta.dto.WishResponse;
 import com.rastatech.secretrasta.model.WishEntity;
-import com.rastatech.secretrasta.repository.WishRepository;
 import com.rastatech.secretrasta.service.UserService;
 import com.rastatech.secretrasta.service.WishService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -41,9 +41,16 @@ public class WishesController {
     }
 
     @GetMapping
-    public List<WishPageResponse> fetchWishes() {
-        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
-        return wishService.fetchWishes(sortedBy);
+    public List<WishPageResponse> fetchWishes(
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> limit,
+            @RequestParam Optional<String> sort,
+            @RequestParam Optional<Integer> direction) {
+        Pageable pageable = PageRequest.of(page.orElseGet(() -> 0),
+                limit.orElseGet(() -> 10),
+                Sort.by(sort.orElseGet(() -> "updatedAt"))
+                        .descending());
+        return wishService.fetchWishes(pageable);
     }
 
     @GetMapping("/user/{user_id}")
