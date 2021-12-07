@@ -8,12 +8,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rastatech.secretrasta.dto.NewUserRequest;
 import com.rastatech.secretrasta.dto.RoleToUserRequest;
 import com.rastatech.secretrasta.dto.UserResponse;
+import com.rastatech.secretrasta.exceptions.EmailNotAvailableException;
+import com.rastatech.secretrasta.exceptions.PhoneNumberNotAvailableException;
+import com.rastatech.secretrasta.exceptions.UserNameNotAvailableException;
 import com.rastatech.secretrasta.model.Role;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.service.RoleService;
 import com.rastatech.secretrasta.service.UserService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
@@ -31,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,10 +55,21 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> createUser(@Valid @RequestBody NewUserRequest user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        try {
+            if (userRepository.existsByUsername(user.getUsername()))
+                throw new UserNameNotAvailableException(user.getUsername());
+            if (userRepository.existsByPhoneNumber(user.getPhoneNumber()))
+                throw new PhoneNumberNotAvailableException(user.getPhoneNumber());
+            if (userRepository.existsByEmail(user.getEmail()))
+                throw new EmailNotAvailableException(user.getEmail());
+
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(modelMapper.map(user, UserEntity.class));
+            roleService.addRoleToUser(user.getUsername(), "ROLE_USER");
+        } catch (UserNameNotAvailableException | PhoneNumberNotAvailableException | EmailNotAvailableException e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/signup").toUriString());
-        userRepository.save(modelMapper.map(user, UserEntity.class));
-        roleService.addRoleToUser(user.getUsername(), "ROLE_USER");
         return ResponseEntity.created(uri).build();
     }
 
