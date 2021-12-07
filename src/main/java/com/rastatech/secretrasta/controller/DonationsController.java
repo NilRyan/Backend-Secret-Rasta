@@ -1,25 +1,33 @@
 package com.rastatech.secretrasta.controller;
 
+import com.rastatech.secretrasta.dto.DonationRequest;
 import com.rastatech.secretrasta.service.DonationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/donations")
+@RequestMapping("/api/donate")
 @RequiredArgsConstructor
 public class DonationsController {
     private final DonationService donationService;
 
-    @GetMapping("/{wish_id}")
-    public int fetchDonationsByWish(@PathVariable("wish_id") Long wishId) {
-        return donationService.fetchDonationsByWish(wishId);
+    @PostMapping("/{wish_id}")
+    public void createDonation(@PathVariable("wish_id") Long wishId, @Valid @RequestBody DonationRequest donation, Authentication auth ) {
+        String username = (String) auth.getPrincipal();
+        donationService.createDonation(wishId, username, donation);
     }
 
-    @GetMapping("/{user_id}")
-    public int fetchDonationsByUser(@PathVariable("user_id") Long userId) {
-        return donationService.fetchDonationsByUser(userId);
-    }
+
+//    @GetMapping("/{wish_id}")
+//    public int fetchDonationsByWish(@PathVariable("wish_id") Long wishId) {
+//        return donationService.fetchDonationsByWish(wishId);
+//    }
+//
+//    @GetMapping("/{user_id}")
+//    public int fetchDonationsByUser(@PathVariable("user_id") Long userId) {
+//        return donationService.fetchDonationsByUser(userId);
+//    }
 }

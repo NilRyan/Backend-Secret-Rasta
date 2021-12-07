@@ -18,6 +18,6 @@ public class UserResponse {
     private String lastName;
     private String phoneNumber;
     private String username;
-    private String info;
+    private int rastaGemsBalance;
     private String avatar;
 }

@@ -6,13 +6,17 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rastatech.secretrasta.dto.NewUserRequest;
+import com.rastatech.secretrasta.dto.RoleToUserRequest;
 import com.rastatech.secretrasta.dto.UserResponse;
+import com.rastatech.secretrasta.exceptions.EmailNotAvailableException;
+import com.rastatech.secretrasta.exceptions.FieldNotAvailableException;
+import com.rastatech.secretrasta.exceptions.PhoneNumberNotAvailableException;
+import com.rastatech.secretrasta.exceptions.UserNameNotAvailableException;
 import com.rastatech.secretrasta.model.Role;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.service.RoleService;
 import com.rastatech.secretrasta.service.UserService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
@@ -30,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,18 +55,32 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponse>saveUser(@Valid @RequestBody NewUserRequest user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public ResponseEntity<?> createUser(@Valid @RequestBody NewUserRequest user) {
+        Map<String, String> resultMap = new HashMap<>();
+        try {
+            if (userRepository.existsByUsername(user.getUsername()))
+                resultMap.put("username", String.format("Username %s is not available", user.getUsername()));
+            if (userRepository.existsByPhoneNumber(user.getPhoneNumber()))
+                resultMap.put("phone_number", String.format("Phone number %s is not available", user.getPhoneNumber()));
+            if (userRepository.existsByEmail(user.getEmail()))
+                resultMap.put("email", String.format("Email %s is not available", user.getEmail()));
+            if (resultMap.size() != 0)
+                throw new FieldNotAvailableException();
+
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(modelMapper.map(user, UserEntity.class));
+            roleService.addRoleToUser(user.getUsername(), "ROLE_USER");
+        } catch (FieldNotAvailableException e) {
+            return ResponseEntity.badRequest().body(resultMap);
+        }
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/signup").toUriString());
-        UserEntity userEntity = userRepository.save(modelMapper.map(user, UserEntity.class));
-        roleService.addRoleToUser(user.getUsername(), "ROLE_USER");
-        return ResponseEntity.created(uri).body(convertToResponse(userEntity));
+        return ResponseEntity.created(uri).build();
     }
 
     @PostMapping("/refresh/token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -80,7 +99,7 @@ public class AuthController {
                 tokens.put("refresh_token", refresh_token);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
-            }catch (Exception exception) {
+            } catch (Exception exception) {
                 response.setHeader("error", exception.getMessage());
                 response.setStatus(FORBIDDEN.value());
                 //response.sendError(FORBIDDEN.value());
@@ -99,20 +118,14 @@ public class AuthController {
     }
 
     @PostMapping("/role/save")
-    public ResponseEntity<Role>saveRole(@RequestBody Role role) {
+    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/role/save").toUriString());
         return ResponseEntity.created(uri).body(roleService.saveRole(role));
     }
 
     @PostMapping("/role/addtouser")
-    public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUserForm form) {
+    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserRequest form) {
         roleService.addRoleToUser(form.getUsername(), form.getRoleName());
         return ResponseEntity.ok().build();
     }
-}
-
-@Data
-class RoleToUserForm {
-    private String username;
-    private String roleName;
 }

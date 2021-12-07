@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService {
@@ -24,13 +26,24 @@ public class LikeServiceImpl implements LikeService {
         LikeEntity likeEntity = new LikeEntity();
         WishEntity wish = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        likeEntity.setWish(wish);
-        likeEntity.setUser(user);
-        likeRepository.save(likeEntity);
+        Optional<LikeEntity> existingLike = likeRepository.findByWishAndUser(wish, user);
+
+        if (existingLike.isPresent()) {
+            unlike(existingLike.get().getLikeId());
+        } else {
+            likeEntity.setWish(wish);
+            likeEntity.setUser(user);
+            likeRepository.save(likeEntity);
+        }
     }
 
     @Override
     public void unlike(Long likeId) {
         likeRepository.deleteById(likeId);
+    }
+
+    @Override
+    public LikeEntity fetchLike(Long likeId) {
+        return likeRepository.findById(likeId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

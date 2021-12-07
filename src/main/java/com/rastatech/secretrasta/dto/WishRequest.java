@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
@@ -24,7 +23,7 @@ public class WishRequest {
     @NotEmpty
     private String description;
 
-    @NotEmpty
-    @Pattern(regexp = "[0-9]+")
-    private int rastagemsRequired;
+    @NotNull
+    @Min(0)
+    private Integer rastagemsRequired;
 }

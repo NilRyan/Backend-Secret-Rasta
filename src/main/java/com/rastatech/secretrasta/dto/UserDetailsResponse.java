@@ -6,31 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.*;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class NewUserRequest {
+public class UserDetailsResponse {
 
-    @Email(regexp = ".+@.+\\..+")
-    @NotBlank
+    private Long userId;
     private String email;
-
-    @NotEmpty
     private String firstName;
-
-    @NotEmpty
     private String lastName;
-
-    @NotEmpty
-    @Pattern(regexp = "[0-9]{11}")
-    private String phoneNumber;
-
-    @NotEmpty
-    private String password;
-
-    @NotEmpty
     private String username;
+    private String avatar;
 }

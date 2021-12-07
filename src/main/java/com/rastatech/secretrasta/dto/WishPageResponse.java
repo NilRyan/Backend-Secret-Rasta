@@ -6,19 +6,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UpdateUserRequest {
+public class WishPageResponse {
 
-    @Email(regexp = ".+@.+\\..+")
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private String username;
-    private String avatar;
+    private Long wishId;
+    private String wishName;
+    private String imageUrl;
+    private String description;
+    private int rastagemsRequired;
+    private int rastagemsDonated;
+    private boolean liked;
+    private int upvotes;
+    private int downvotes;
 }
