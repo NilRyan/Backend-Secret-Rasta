@@ -9,6 +9,7 @@ import com.rastatech.secretrasta.dto.NewUserRequest;
 import com.rastatech.secretrasta.dto.RoleToUserRequest;
 import com.rastatech.secretrasta.dto.UserResponse;
 import com.rastatech.secretrasta.exceptions.EmailNotAvailableException;
+import com.rastatech.secretrasta.exceptions.FieldNotAvailableException;
 import com.rastatech.secretrasta.exceptions.PhoneNumberNotAvailableException;
 import com.rastatech.secretrasta.exceptions.UserNameNotAvailableException;
 import com.rastatech.secretrasta.model.Role;
@@ -55,19 +56,22 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> createUser(@Valid @RequestBody NewUserRequest user) {
+        Map<String, String> resultMap = new HashMap<>();
         try {
             if (userRepository.existsByUsername(user.getUsername()))
-                throw new UserNameNotAvailableException(user.getUsername());
+                resultMap.put("username", String.format("Username %s is not available", user.getUsername()));
             if (userRepository.existsByPhoneNumber(user.getPhoneNumber()))
-                throw new PhoneNumberNotAvailableException(user.getPhoneNumber());
+                resultMap.put("phone_number", String.format("Phone number %s is not available", user.getPhoneNumber()));
             if (userRepository.existsByEmail(user.getEmail()))
-                throw new EmailNotAvailableException(user.getEmail());
+                resultMap.put("email", String.format("Email %s is not available", user.getEmail()));
+            if (resultMap.size() != 0)
+                throw new FieldNotAvailableException();
 
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(modelMapper.map(user, UserEntity.class));
             roleService.addRoleToUser(user.getUsername(), "ROLE_USER");
-        } catch (UserNameNotAvailableException | PhoneNumberNotAvailableException | EmailNotAvailableException e) {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        } catch (FieldNotAvailableException e) {
+            return ResponseEntity.badRequest().body(resultMap);
         }
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/signup").toUriString());
         return ResponseEntity.created(uri).build();
