@@ -24,8 +24,8 @@ public class SecretRastaApplication {
 	@Bean
 	CommandLineRunner run(RoleService roleService) {
 		return args -> {
-			roleService.saveRole(new Role(null, "ROLE_USER"));
-			roleService.saveRole(new Role(null, "ROLE_ADMIN"));
+			roleService.saveRole(new Role(1L, "ROLE_USER"));
+			roleService.saveRole(new Role(2L, "ROLE_ADMIN"));
 		};
 	}
 }
