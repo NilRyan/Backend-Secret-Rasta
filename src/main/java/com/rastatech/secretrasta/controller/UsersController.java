@@ -7,12 +7,16 @@ import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,7 +28,14 @@ public class UsersController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public List<UserResponse> fetchUsers() {
+    public List<UserResponse> fetchUsers(@RequestParam Optional<Integer> page,
+                                         @RequestParam Optional<Integer> limit,
+                                         @RequestParam Optional<String> sort,
+                                         @RequestParam Optional<Integer> direction) {
+        Pageable pageable = PageRequest.of(page.orElseGet(() -> 0),
+                limit.orElseGet(() -> 10),
+                Sort.by(sort.orElseGet(() -> "updatedAt"))
+                        .descending());
         List<UserEntity> users = userService.fetchUsers();
         return users.stream().map(this::convertToResponse).collect(Collectors.toList());
     }
