@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface WishRepository extends CrudRepository<WishEntity, Long> {
-    List<WishEntity> findAllByUser(UserEntity user);
+    List<WishEntity> findAllByUser(UserEntity user, Pageable pageable);
     List<WishEntity> findAll(Pageable pageable);
 }
