@@ -47,9 +47,9 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishEntity> fetchWishesByUser(Long userId) {
+    public List<WishEntity> fetchWishesByUser(Long userId, Pageable pageable) {
         UserEntity user = fetchUser(userId);
-        return wishRepository.findAllByUser(user);
+        return wishRepository.findAllByUser(user, pageable);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishPageResponse> fetchWishesGrantedByUser(Long userId, Pageable pageable) {
-        List<WishEntity> userWishes = fetchWishesByUser(userId)
+        List<WishEntity> userWishes = fetchWishesByUser(userId, pageable)
                 .stream()
                 .filter(wish -> wish.getRastagemsDonated() > wish.getRastagemsRequired())
                 .collect(Collectors.toList());
@@ -103,7 +103,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishPageResponse> fetchDonatedWishes(Long userId) {
+    public List<WishPageResponse> fetchDonatedWishes(Long userId, Pageable pageable) {
         List<DonationEntity> donatedByUser = donationRepository.findByUser(fetchUser(userId));
         List<WishPageResponse> wishPageResponses = new ArrayList<>();
         donatedByUser.forEach(wish -> wishPageResponses.add(fetchWishWithMoreDetails(wish.getWish().getWishId(), userId)));
