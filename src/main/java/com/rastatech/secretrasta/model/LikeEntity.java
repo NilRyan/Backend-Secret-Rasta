@@ -19,10 +19,8 @@ public class LikeEntity {
     private Long likeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private WishEntity wish;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity user;
 }

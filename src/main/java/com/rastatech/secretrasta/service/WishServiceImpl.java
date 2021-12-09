@@ -47,9 +47,9 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishEntity> fetchWishesByUser(Long userId) {
+    public List<WishEntity> fetchWishesByUser(Long userId, Pageable pageable) {
         UserEntity user = fetchUser(userId);
-        return wishRepository.findAllByUser(user);
+        return wishRepository.findAllByUser(user, pageable);
     }
 
     @Override
@@ -85,9 +85,9 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishPageResponse> fetchWishesGrantedByUser(Long userId, Pageable pageable) {
-        List<WishEntity> userWishes = fetchWishesByUser(userId)
+        List<WishEntity> userWishes = fetchWishesByUser(userId, pageable)
                 .stream()
-                .filter(wish -> wish.getRastagemsDonated() > wish.getRastagemsRequired())
+                .filter(wish -> wish.getRastagemsDonated() == wish.getRastagemsRequired())
                 .collect(Collectors.toList());
         List<WishPageResponse> wishPageResponses = new ArrayList<>();
         userWishes.forEach(wish -> wishPageResponses.add(fetchWishWithMoreDetails(wish.getWishId(), userId)));
@@ -96,17 +96,17 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishPageResponse> fetchLikedWishes(Long userId, Pageable pageable) {
-        List<LikeEntity> likedByUser = likeRepository.findByUser(fetchUser(userId), pageable);
+        List<WishEntity> likedByUser = wishRepository.findByLikes_User(fetchUser(userId), pageable);
         List<WishPageResponse> wishPageResponses = new ArrayList<>();
-        likedByUser.forEach(wish -> wishPageResponses.add(fetchWishWithMoreDetails(wish.getWish().getWishId(), userId)));
+        likedByUser.forEach(wish -> wishPageResponses.add(fetchWishWithMoreDetails(wish.getWishId(), userId)));
         return wishPageResponses;
     }
 
     @Override
-    public List<WishPageResponse> fetchDonatedWishes(Long userId) {
-        List<DonationEntity> donatedByUser = donationRepository.findByUser(fetchUser(userId));
+    public List<WishPageResponse> fetchDonatedWishes(Long userId, Pageable pageable) {
+        List<WishEntity> donatedByUser = wishRepository.findByDonations_User(fetchUser(userId), pageable);
         List<WishPageResponse> wishPageResponses = new ArrayList<>();
-        donatedByUser.forEach(wish -> wishPageResponses.add(fetchWishWithMoreDetails(wish.getWish().getWishId(), userId)));
+        donatedByUser.forEach(wish -> wishPageResponses.add(fetchWishWithMoreDetails(wish.getWishId(), userId)));
         return wishPageResponses;
     }
 
