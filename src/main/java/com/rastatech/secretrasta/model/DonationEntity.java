@@ -23,11 +23,9 @@ public class DonationEntity {
     private int amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private WishEntity wish;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity user;
 
     @CreationTimestamp
