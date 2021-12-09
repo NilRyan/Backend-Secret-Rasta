@@ -45,7 +45,7 @@ public class UserEntity {
     @Column(unique = true)
     private String username;
 
-    private int rastaGemsBalance = 100;
+    private int rastaGemsBalance = 1000;
     private String avatar;
 
     @ManyToMany(fetch = EAGER)

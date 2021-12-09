@@ -14,5 +14,5 @@ import java.util.Optional;
 public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
     Optional<LikeEntity> findByWishAndUser(WishEntity wish, UserEntity user);
     boolean existsByWishAndUser(WishEntity wish, UserEntity user);
-    List<LikeEntity> findByUser(UserEntity user, Pageable pageable);
+    List<LikeEntity> findByUser(UserEntity user);
 }

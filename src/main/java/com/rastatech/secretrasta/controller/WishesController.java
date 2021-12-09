@@ -116,10 +116,10 @@ public class WishesController {
 
     private Pageable getPageable(Optional<Integer> page, Optional<Integer> limit, Optional<String> sort, Optional<String> direction) {
         Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);
-        return PageRequest.of(page.orElseGet(() -> 0),
-                limit.orElseGet(() -> 10),
-                Sort.by(sort.orElseGet(() -> "updatedAt"))
-                        .and(Sort.by(sortDirection)));
+        return PageRequest.of(page.orElse(0),
+                limit.orElse(10),
+                sortDirection,
+                sort.orElse("updatedAt"));
     }
 
     private WishResponse mapToWishResponse(WishEntity wish) {
