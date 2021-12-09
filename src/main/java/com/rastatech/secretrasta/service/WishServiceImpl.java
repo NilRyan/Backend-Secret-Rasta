@@ -87,7 +87,7 @@ public class WishServiceImpl implements WishService {
     public List<WishPageResponse> fetchWishesGrantedByUser(Long userId, Pageable pageable) {
         List<WishEntity> userWishes = fetchWishesByUser(userId, pageable)
                 .stream()
-                .filter(wish -> wish.getRastagemsDonated() > wish.getRastagemsRequired())
+                .filter(wish -> wish.getRastagemsDonated() == wish.getRastagemsRequired())
                 .collect(Collectors.toList());
         List<WishPageResponse> wishPageResponses = new ArrayList<>();
         userWishes.forEach(wish -> wishPageResponses.add(fetchWishWithMoreDetails(wish.getWishId(), userId)));
