@@ -18,7 +18,7 @@ public class WishPageResponse {
     private String description;
     private int rastagemsRequired;
     private int rastagemsDonated;
-    private boolean liked;
+    private boolean isLiked;
     private int upvotes;
     private int downvotes;
 }

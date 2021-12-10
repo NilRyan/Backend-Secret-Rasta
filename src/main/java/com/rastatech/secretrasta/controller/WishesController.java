@@ -47,7 +47,9 @@ public class WishesController {
             @RequestParam Optional<String> sort,
             @RequestParam Optional<String> direction) {
         Pageable pageable = getPageable(page, limit, sort, direction);
-        return wishService.fetchWishes(pageable);
+        List<WishEntity> wishEntities = wishService.fetchWishes(pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
+
     }
 
     @GetMapping("/user/{user_id}")
@@ -65,7 +67,8 @@ public class WishesController {
                                       Authentication auth) {
         String username = (String) auth.getPrincipal();
         Long userId = userService.fetchUserByUsername(username).getUserId();
-        return wishService.fetchWishWithMoreDetails(wishId, userId);
+        WishEntity wish = wishService.fetchWishWithMoreDetails(wishId, userId);
+        return mapToWishPageResponse(wish);
     }
 
     @GetMapping("/granted/{user_id}")
@@ -74,7 +77,8 @@ public class WishesController {
                                                            @RequestParam Optional<String> sort,
                                                            @RequestParam Optional<String> direction) {
         Pageable pageable = getPageable(page, limit, sort, direction);
-        return wishService.fetchWishesGrantedByUser(userId, pageable);
+        List<WishEntity> wishEntities = wishService.fetchWishesGrantedByUser(userId, pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
 
 
@@ -84,7 +88,8 @@ public class WishesController {
                                                    @RequestParam Optional<String> sort,
                                                    @RequestParam Optional<String> direction) {
         Pageable pageable = getPageable(page, limit, sort, direction);
-        return wishService.fetchLikedWishes(userId, pageable);
+        List<WishEntity> wishEntities = wishService.fetchLikedWishes(userId, pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/donated/{user_id}")
@@ -94,7 +99,8 @@ public class WishesController {
                                                            @RequestParam Optional<String> sort,
                                                            @RequestParam Optional<String> direction) {
         Pageable pageable = getPageable(page, limit, sort, direction);
-        return wishService.fetchDonatedWishes(userId, pageable);
+        List<WishEntity> wishEntities = wishService.fetchDonatedWishes(userId, pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
 
     @PutMapping("/{wish_id}")
@@ -124,6 +130,10 @@ public class WishesController {
 
     private WishResponse mapToWishResponse(WishEntity wish) {
         return modelMapper.map(wish, WishResponse.class);
+    }
+
+    private WishPageResponse mapToWishPageResponse(WishEntity wish) {
+        return modelMapper.map(wish, WishPageResponse.class);
     }
 
 }
