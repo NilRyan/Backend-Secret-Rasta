@@ -2,6 +2,7 @@ package com.rastatech.secretrasta.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.rastatech.secretrasta.exceptions.NotEnoughGemsException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -65,4 +66,13 @@ public class UserEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private List<WishVoteEntity> votes;
+
+    public void addBalance(int amount) {
+        this.rastaGemsBalance = rastaGemsBalance + amount;
+    }
+
+    public void decreaseBalance(int amount) {
+        if (amount > this.rastaGemsBalance) throw new NotEnoughGemsException();
+        this.rastaGemsBalance = rastaGemsBalance - amount;
+    }
 }

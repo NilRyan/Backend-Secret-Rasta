@@ -104,7 +104,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishPageResponse> fetchDonatedWishes(Long userId, Pageable pageable) {
-        List<WishEntity> donatedByUser = wishRepository.findByDonations_User(fetchUser(userId), pageable);
+        List<WishEntity> donatedByUser = wishRepository.findByDonations_User_UserId(userId, pageable);
         List<WishPageResponse> wishPageResponses = new ArrayList<>();
         donatedByUser.forEach(wish -> wishPageResponses.add(fetchWishWithMoreDetails(wish.getWishId(), userId)));
         return wishPageResponses;
