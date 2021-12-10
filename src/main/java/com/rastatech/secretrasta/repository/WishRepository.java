@@ -13,6 +13,6 @@ import java.util.List;
 public interface WishRepository extends CrudRepository<WishEntity, Long> {
     List<WishEntity> findAllByUser(UserEntity user, Pageable pageable);
     List<WishEntity> findAll(Pageable pageable);
-    List<WishEntity> findByLikes_User(UserEntity user, Pageable pageable);
-    List<WishEntity> findByDonations_User_UserId(Long userId, Pageable pageable);
+    List<WishEntity> findByLikes_User_UserId(Long userId, Pageable pageable);
+    List<WishEntity> findDistinctByDonations_User_UserId(Long userId, Pageable pageable);
 }

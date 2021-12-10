@@ -3,7 +3,6 @@ package com.rastatech.secretrasta.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -47,4 +46,25 @@ public class WishEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wish", cascade = CascadeType.ALL)
     private List<WishVoteEntity> votes;
+
+    @Transient
+    private boolean isLiked;
+
+    @Transient
+    private int upvotes;
+
+    @Transient
+    private int downvotes;
+
+    public void setIsLiked(Long userId) {
+        isLiked = likes.stream().filter(like -> like.getUser().getUserId() == userId).count() == 1 ? true : false;
+    }
+
+    public int getUpvotes() {
+        return (int) votes.stream().filter(a -> a.getVoteType().equals(VoteType.UPVOTE)).count();
+    }
+
+    public int getDownvotes() {
+        return  (int) votes.stream().filter(a -> a.getVoteType().equals(VoteType.DOWNVOTE)).count();
+    }
 }
