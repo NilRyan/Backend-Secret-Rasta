@@ -53,13 +53,13 @@ public class WishesController {
     }
 
     @GetMapping("/user/{user_id}")
-    public List<WishResponse> fetchWishesByUser(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
+    public List<WishPageResponse> fetchWishesByUser(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
                                                 @RequestParam Optional<Integer> limit,
                                                 @RequestParam Optional<String> sort,
                                                 @RequestParam Optional<String> direction) {
         Pageable pageable = getPageable(page, limit, sort, direction);
         List<WishEntity> wishes = wishService.fetchWishesByUser(userId, pageable);
-        return wishes.stream().map(this::mapToWishResponse).collect(Collectors.toList());
+        return wishes.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/{wish_id}")

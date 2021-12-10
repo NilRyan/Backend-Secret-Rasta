@@ -1,11 +1,9 @@
 package com.rastatech.secretrasta.service;
 
 import com.rastatech.secretrasta.dto.UpdateWishRequest;
-import com.rastatech.secretrasta.dto.WishPageResponse;
 import com.rastatech.secretrasta.dto.WishRequest;
-import com.rastatech.secretrasta.model.*;
-import com.rastatech.secretrasta.repository.DonationRepository;
-import com.rastatech.secretrasta.repository.LikeRepository;
+import com.rastatech.secretrasta.model.UserEntity;
+import com.rastatech.secretrasta.model.WishEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +34,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishEntity> fetchWishes(Pageable pageable) {
-        List<WishEntity> wishes = wishRepository.findAll(pageable);
+        List<WishEntity> wishes = wishRepository.findByDeletedFalse(pageable);
         wishes.forEach(wish -> wish.setIsLiked(wish.getUser().getUserId()));
         return wishes;
     }
@@ -45,7 +42,9 @@ public class WishServiceImpl implements WishService {
     @Override
     public List<WishEntity> fetchWishesByUser(Long userId, Pageable pageable) {
         UserEntity user = fetchUser(userId);
-        return wishRepository.findAllByUser(user, pageable);
+        List<WishEntity> wishes = wishRepository.findByUserAndDeletedFalse(user, pageable);
+        wishes.forEach(wish -> wish.setIsLiked(wish.getUser().getUserId()));
+        return wishes;
     }
 
     @Override
@@ -84,14 +83,14 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishEntity> fetchLikedWishes(Long userId, Pageable pageable) {
-        List<WishEntity> likedByUser = wishRepository.findByLikes_User_UserId(userId, pageable);
+        List<WishEntity> likedByUser = wishRepository.findByLikes_User_UserIdAndDeletedFalse(userId, pageable);
         likedByUser.forEach(wish -> wish.setIsLiked(userId));
         return likedByUser;
     }
 
     @Override
     public List<WishEntity> fetchDonatedWishes(Long userId, Pageable pageable) {
-        List<WishEntity> donatedByUser = wishRepository.findDistinctByDonations_User_UserId(userId, pageable);
+        List<WishEntity> donatedByUser = wishRepository.findDistinctByDonations_User_UserIdAndDeletedFalse(userId, pageable);
         donatedByUser.forEach(wish -> wish.setIsLiked(userId));
         return donatedByUser;
     }

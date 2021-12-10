@@ -3,17 +3,20 @@ package com.rastatech.secretrasta.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "wishes")
+@SQLDelete(sql = "UPDATE wishes SET deleted = true WHERE wishes.wish_id=?")
+@Where(clause = "deleted=false")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,11 +44,13 @@ public class WishEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wish", cascade = CascadeType.ALL)
     private List<LikeEntity> likes;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wish", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wish")
     private List<DonationEntity> donations;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wish", cascade = CascadeType.ALL)
     private List<WishVoteEntity> votes;
+
+    private boolean deleted = Boolean.FALSE;
 
     @Transient
     private boolean isLiked;
@@ -57,7 +62,7 @@ public class WishEntity {
     private int downvotes;
 
     public void setIsLiked(Long userId) {
-        isLiked = likes.stream().filter(like -> like.getUser().getUserId() == userId).count() == 1 ? true : false;
+        isLiked = likes.stream().filter(like -> Objects.equals(like.getUser().getUserId(), userId)).count() == 1;
     }
 
     public int getUpvotes() {

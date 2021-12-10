@@ -44,13 +44,13 @@ public class VoteController {
 //        wishVoteService.deleteVote(wishId, voteId);
 //    }
 
-    @GetMapping
-    public List<WishVoteResponse> getAllVotes(@PathVariable("wish_id") Long wishId) {
-        List<WishVoteEntity> wishes = wishVoteService.fetchVotes(wishId);
-        return wishes.stream().map(this::mapToWishVoteResponse).collect(Collectors.toList());
-    }
-
-    private WishVoteResponse mapToWishVoteResponse(WishVoteEntity wish) {
-        return modelMapper.map(wish, WishVoteResponse.class);
-    }
+//    @GetMapping
+//    public List<WishVoteResponse> getAllVotes(@PathVariable("wish_id") Long wishId) {
+//        List<WishVoteEntity> wishes = wishVoteService.fetchVotes(wishId);
+//        return wishes.stream().map(this::mapToWishVoteResponse).collect(Collectors.toList());
+//    }
+//
+//    private WishVoteResponse mapToWishVoteResponse(WishVoteEntity wish) {
+//        return modelMapper.map(wish, WishVoteResponse.class);
+//    }
 }

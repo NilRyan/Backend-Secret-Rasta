@@ -59,7 +59,7 @@ public class WishVoteServiceImpl implements WishVoteService {
     @Override
     public List<WishVoteEntity> fetchVotes(Long wishId) {
         WishEntity wish = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return wishVoteRepository.findAllByWish(wish);
+        return wishVoteRepository.findByWish(wish);
     }
 
     @Override
