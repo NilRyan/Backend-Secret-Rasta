@@ -1,6 +1,7 @@
 package com.rastatech.secretrasta.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Table(name = "wishes")
 @SQLDelete(sql = "UPDATE wishes SET deleted = true WHERE wishes.wish_id=?")
 @Where(clause = "deleted=false")
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
