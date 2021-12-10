@@ -18,7 +18,7 @@ public class SendGemsController {
     private final SendGemsService sendGemsService;
 
     @PostMapping("/{user_id}")
-    public void sendRastaGemsToUser(@PathVariable("userId") Long sendToUserId,
+    public void sendRastaGemsToUser(@PathVariable("user_id") Long sendToUserId,
                                     @Valid @RequestBody SendGemsRequest sendGemsRequest,
                                     Authentication auth ) {
         String username = (String) auth.getPrincipal();
