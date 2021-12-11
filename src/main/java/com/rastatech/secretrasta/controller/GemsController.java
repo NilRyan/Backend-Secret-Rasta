@@ -10,11 +10,15 @@ import com.rastatech.secretrasta.model.SendGemsEntity;
 import com.rastatech.secretrasta.service.AddBalanceService;
 import com.rastatech.secretrasta.service.DonationService;
 import com.rastatech.secretrasta.service.SendGemsService;
+import com.rastatech.secretrasta.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -25,10 +29,11 @@ public class GemsController {
     private final AddBalanceService addBalanceService;
     private final SendGemsService sendGemsService;
     private final DonationService donationService;
+    private final UserService userService;
 
 
     @PostMapping("/donate/{wish_id}")
-    public void createDonation(@PathVariable("wish_id") Long wishId, @Valid @RequestBody DonationRequest donation, Authentication auth ) {
+    public void createDonation(@PathVariable("wish_id") Long wishId, @Valid @RequestBody DonationRequest donation, Authentication auth) {
         String username = (String) auth.getPrincipal();
         donationService.createDonation(wishId, username, donation);
     }
@@ -38,10 +43,11 @@ public class GemsController {
         String username = (String) auth.getPrincipal();
         addBalanceService.addBalance(username, addBalanceRequest);
     }
+
     @PostMapping("/transfer/{user_id}")
     public void sendRastaGemsToUser(@PathVariable("user_id") Long sendToUserId,
                                     @Valid @RequestBody SendGemsRequest sendGemsRequest,
-                                    Authentication auth ) {
+                                    Authentication auth) {
         String username = (String) auth.getPrincipal();
         sendGemsService.sendGemsToUser(sendToUserId, username, sendGemsRequest);
     }
@@ -49,11 +55,73 @@ public class GemsController {
     @GetMapping("/history")
     public List<TransactionHistoryResponse> getTransactionHistory(Authentication auth) {
         String username = (String) auth.getPrincipal();
-        List<DonationEntity>  donations = donationService.fetchDonationsByUser(username);
+        List<DonationEntity> donations = donationService.fetchDonationsByUser(username);
+        List<DonationEntity> receivedDonations = donationService.fetchReceivedDonationsByUser(username);
         List<SendGemsEntity> sentGems = sendGemsService.fetchSendGemsTransactions(username);
+        List<SendGemsEntity> receivedGems = sendGemsService.fetchReceiveGemsTransactions(username);
         List<AddBalanceEntity> addBalance = addBalanceService.fetchAddBalanceTransactions(username);
+        List<TransactionHistoryResponse> transactionHistory = new ArrayList<>();
+        donations.forEach((transaction) -> {
+            LocalDateTime dateTime = transaction.getTransactionDate();
+            TransactionHistoryResponse donation = TransactionHistoryResponse.builder()
+                    .transactionDate(dateTime.toLocalDate())
+                    .transactionTime(dateTime.toLocalTime())
+                    .transactionDetails("Donation to Wish" + transaction.getDonationId())
+                    .amount("-" + transaction.getAmount())
+                    .build();
+            transactionHistory.add(donation);
+        });
+        receivedDonations.forEach((transaction) -> {
+            LocalDateTime dateTime = transaction.getTransactionDate();
+            TransactionHistoryResponse donation = TransactionHistoryResponse.builder()
+                    .transactionDate(dateTime.toLocalDate())
+                    .transactionTime(dateTime.toLocalTime())
+                    .transactionDetails("Receive donation" + transaction.getDonationId())
+                    .amount("+" + transaction.getAmount())
+                    .build();
+            transactionHistory.add(donation);
+        });
+        sentGems.forEach((transaction) -> {
+            LocalDateTime dateTime = transaction.getTransactionDate();
+            TransactionHistoryResponse sendGemTransac = TransactionHistoryResponse.builder()
+                    .transactionDate(dateTime.toLocalDate())
+                    .transactionTime(dateTime.toLocalTime())
+                    .transactionDetails("Send Rasta Gems to " + transaction.getSendGemTo())
+                    .amount("-" + transaction.getAmount())
+                    .build();
+            transactionHistory.add(sendGemTransac);
 
+        });
+        receivedGems.forEach((transaction) -> {
+            LocalDateTime dateTime = transaction.getTransactionDate();
+            TransactionHistoryResponse receivedGemsTransac = TransactionHistoryResponse.builder()
+                    .transactionDate(dateTime.toLocalDate())
+                    .transactionTime(dateTime.toLocalTime())
+                    .transactionDetails("Receive Rasta Gems from" + transaction.getSendGemFrom())
+                    .amount("+" + transaction.getAmount())
+                    .build();
+            transactionHistory.add(receivedGemsTransac);
 
+        });
+        addBalance.forEach((transaction) -> {
+            LocalDateTime dateTime = transaction.getTransactionDate();
+            TransactionHistoryResponse addBalanceTransac = TransactionHistoryResponse.builder()
+                    .transactionDate(dateTime.toLocalDate())
+                    .transactionTime(dateTime.toLocalTime())
+                    .transactionDetails("Add Balance")
+                    .amount("+" + transaction.getAmount())
+                    .build();
+            transactionHistory.add(addBalanceTransac);
+        });
+
+        Comparator<TransactionHistoryResponse> compareByDate = (TransactionHistoryResponse t1, TransactionHistoryResponse t2) -> {
+            LocalDateTime dateT1 = LocalDateTime.of(t1.getTransactionDate(), t1.getTransactionTime());
+            LocalDateTime dateT2 = LocalDateTime.of(t2.getTransactionDate(), t2.getTransactionTime());
+            return dateT2.compareTo(dateT1);
+        };
+
+        transactionHistory.sort(compareByDate);
+        return transactionHistory;
     }
 
 

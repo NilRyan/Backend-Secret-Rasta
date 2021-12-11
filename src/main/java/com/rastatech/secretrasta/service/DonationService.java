@@ -8,4 +8,5 @@ import java.util.List;
 public interface DonationService {
     void createDonation(Long wishId, String username, DonationRequest donation);
     List<DonationEntity> fetchDonationsByUser(String username);
+    List<DonationEntity> fetchReceivedDonationsByUser(String username);
 }

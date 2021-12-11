@@ -63,6 +63,11 @@ public class DonationServiceImpl implements DonationService {
         return donationRepository.findByUser_Username(username);
     }
 
+    @Override
+    public List<DonationEntity> fetchReceivedDonationsByUser(String username) {
+        return donationRepository.findByWish_User_Username(username);
+    }
+
 //    @Override
 //    public int fetchDonationsByWish(Long wishId) {
 //        WishEntity wish = wishRepository.findById(wishId)

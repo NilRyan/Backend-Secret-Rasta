@@ -45,6 +45,11 @@ public class SendGemsServiceImpl implements SendGemsService {
 
     @Override
     public List<SendGemsEntity> fetchSendGemsTransactions(String username) {
-        return sendGemRepository.findByUser_Username(username);
+        return sendGemRepository.findBySendGemFrom_Username(username);
+    }
+
+    @Override
+    public List<SendGemsEntity> fetchReceiveGemsTransactions(String username) {
+        return sendGemRepository.findBySendGemTo_Username(username);
     }
 }

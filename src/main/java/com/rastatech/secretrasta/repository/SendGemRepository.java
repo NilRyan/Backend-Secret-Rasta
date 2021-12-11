@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface SendGemRepository extends CrudRepository<SendGemsEntity, Long> {
-    List<SendGemsEntity> findByUser_Username(String userName);
+    List<SendGemsEntity> findBySendGemFrom_Username(String userName);
+    List<SendGemsEntity> findBySendGemTo_Username(String userName);
 }
