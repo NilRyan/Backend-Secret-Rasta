@@ -1,7 +1,6 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.DonationRequest;
-import com.rastatech.secretrasta.exceptions.NotEnoughGemsException;
+import com.rastatech.secretrasta.dto.request.DonationRequest;
 import com.rastatech.secretrasta.model.DonationEntity;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.model.WishEntity;
@@ -41,7 +40,7 @@ public class DonationServiceImpl implements DonationService {
         UserEntity fromUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (toUser.equals(fromUser)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
+        if (wish.getRastagemsRequired() == wish.getRastagemsDonated()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         int rastaGemsRequired = wish.getRastagemsRequired();
         int currentRastaGems = wish.getRastagemsDonated();
         int donationAmount = donation.getAmount();
@@ -60,18 +59,28 @@ public class DonationServiceImpl implements DonationService {
     }
 
     @Override
-    public int fetchDonationsByWish(Long wishId) {
-        WishEntity wish = wishRepository.findById(wishId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        List<DonationEntity> donations = donationRepository.findByWish(wish);
-        return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
+    public List<DonationEntity> fetchDonationsByUser(String username) {
+        return donationRepository.findByUser_Username(username);
     }
 
     @Override
-    public int fetchDonationsByUser(Long userId) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        List<DonationEntity> donations = donationRepository.findByUser(user);
-        return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
+    public List<DonationEntity> fetchReceivedDonationsByUser(String username) {
+        return donationRepository.findByWish_User_Username(username);
     }
+
+//    @Override
+//    public int fetchDonationsByWish(Long wishId) {
+//        WishEntity wish = wishRepository.findById(wishId)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        List<DonationEntity> donations = donationRepository.findByWish(wish);
+//        return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
+//    }
+//
+//    @Override
+//    public int fetchDonationsByUser(Long userId) {
+//        UserEntity user = userRepository.findById(userId)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        List<DonationEntity> donations = donationRepository.findByUser(user);
+//        return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
+//    }
 }

@@ -1,4 +1,4 @@
-package com.rastatech.secretrasta.dto;
+package com.rastatech.secretrasta.dto.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -6,14 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CommentRequest {
-
-    @NotEmpty
-    private String comment;
+public class UpdateWishRequest {
+    private String wishName;
+    private String imageUrl;
+    private String description;
+    private int rastagemsRequired;
 }

@@ -1,7 +1,7 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.CommentRequest;
-import com.rastatech.secretrasta.dto.UpdateCommentRequest;
+import com.rastatech.secretrasta.dto.request.CommentRequest;
+import com.rastatech.secretrasta.dto.request.UpdateCommentRequest;
 import com.rastatech.secretrasta.model.CommentEntity;
 
 import java.util.List;

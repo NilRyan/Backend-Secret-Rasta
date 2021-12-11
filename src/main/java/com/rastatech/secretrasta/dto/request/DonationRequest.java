@@ -1,4 +1,4 @@
-package com.rastatech.secretrasta.dto;
+package com.rastatech.secretrasta.dto.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class AddBalanceRequest {
+public class DonationRequest {
 
     @NotNull
     @Min(1)

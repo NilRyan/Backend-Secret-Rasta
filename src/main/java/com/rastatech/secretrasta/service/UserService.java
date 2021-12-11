@@ -1,7 +1,6 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.UpdateUserRequest;
-import com.rastatech.secretrasta.model.Role;
+import com.rastatech.secretrasta.dto.request.UpdateUserRequest;
 import com.rastatech.secretrasta.model.UserEntity;
 
 import java.util.List;

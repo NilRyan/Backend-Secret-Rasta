@@ -1,23 +1,17 @@
 package com.rastatech.secretrasta.controller;
 
-import com.rastatech.secretrasta.dto.UpdateUserRequest;
-import com.rastatech.secretrasta.dto.UserDetailsResponse;
-import com.rastatech.secretrasta.dto.UserResponse;
+import com.rastatech.secretrasta.dto.request.UpdateUserRequest;
+import com.rastatech.secretrasta.dto.response.UserDetailsResponse;
+import com.rastatech.secretrasta.dto.response.UserResponse;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")

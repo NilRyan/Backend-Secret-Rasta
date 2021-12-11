@@ -1,6 +1,6 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.SendGemsRequest;
+import com.rastatech.secretrasta.dto.request.SendGemsRequest;
 import com.rastatech.secretrasta.exceptions.NotEnoughGemsException;
 import com.rastatech.secretrasta.model.SendGemsEntity;
 import com.rastatech.secretrasta.model.UserEntity;
@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +41,15 @@ public class SendGemsServiceImpl implements SendGemsService {
         toUser.addBalance(sendAmount);
         fromUser.decreaseBalance(sendAmount);
         sendGemRepository.save(newSendGems);
+    }
+
+    @Override
+    public List<SendGemsEntity> fetchSendGemsTransactions(String username) {
+        return sendGemRepository.findBySendGemFrom_Username(username);
+    }
+
+    @Override
+    public List<SendGemsEntity> fetchReceiveGemsTransactions(String username) {
+        return sendGemRepository.findBySendGemTo_Username(username);
     }
 }

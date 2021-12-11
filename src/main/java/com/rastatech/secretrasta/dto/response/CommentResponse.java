@@ -1,4 +1,4 @@
-package com.rastatech.secretrasta.dto;
+package com.rastatech.secretrasta.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class RoleToUserRequest {
-    private String username;
-    private String roleName;
+public class CommentResponse {
+
+    private Long commentId;
+    private String comment;
+    private UserResponse user;
 }

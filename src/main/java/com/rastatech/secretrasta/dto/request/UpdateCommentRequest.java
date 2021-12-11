@@ -1,19 +1,19 @@
-package com.rastatech.secretrasta.dto;
+package com.rastatech.secretrasta.dto.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.rastatech.secretrasta.model.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CommentResponse {
+public class UpdateCommentRequest {
 
-    private Long commentId;
+    @NotEmpty
     private String comment;
-    private UserResponse user;
 }

@@ -1,7 +1,7 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.UpdateWishRequest;
-import com.rastatech.secretrasta.dto.WishRequest;
+import com.rastatech.secretrasta.dto.request.UpdateWishRequest;
+import com.rastatech.secretrasta.dto.request.WishRequest;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.model.WishEntity;
 import com.rastatech.secretrasta.repository.UserRepository;

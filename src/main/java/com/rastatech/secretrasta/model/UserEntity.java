@@ -3,10 +3,7 @@ package com.rastatech.secretrasta.model;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.rastatech.secretrasta.exceptions.NotEnoughGemsException;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -22,10 +19,10 @@ import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Table(name = "users")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserEntity {
     @Id
@@ -45,15 +42,18 @@ public class UserEntity {
 
     @Column(unique = true)
     private String phoneNumber;
+    @Builder.Default
     private boolean enabled = true;
     private String password;
 
     @Column(unique = true)
     private String username;
 
+    @Builder.Default
     private int rastaGemsBalance = 888;
     private String avatar;
 
+    @Builder.Default
     @ManyToMany(fetch = EAGER)
     private Collection<Role> roles = new ArrayList<>();
 

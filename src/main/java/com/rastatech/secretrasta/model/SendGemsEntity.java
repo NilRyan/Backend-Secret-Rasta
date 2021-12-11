@@ -1,18 +1,16 @@
 package com.rastatech.secretrasta.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "send_gems")
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class SendGemsEntity {
