@@ -64,6 +64,7 @@ public class WishEntity {
     @Transient
     private int downvotes;
 
+
     public void setIsLiked(Long userId) {
         isLiked = likes.stream().filter(like -> Objects.equals(like.getUser().getUserId(), userId)).count() == 1;
     }
