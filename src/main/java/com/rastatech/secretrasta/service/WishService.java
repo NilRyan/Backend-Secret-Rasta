@@ -18,4 +18,6 @@ public interface WishService {
     List<WishEntity> fetchWishesGrantedByUser(Long userId, Pageable pageable);
     List<WishEntity> fetchLikedWishes(Long userId, Pageable pageable);
     List<WishEntity> fetchDonatedWishes(Long userId, Pageable pageable);
+
+    List<WishEntity> fetchActiveWishesByUser(Long userId, Pageable pageable);
 }

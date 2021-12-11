@@ -71,7 +71,7 @@ public class WishesController {
         return mapToWishPageResponse(wish);
     }
 
-    @GetMapping("/granted/{user_id}")
+    @GetMapping("/fulfilled/{user_id}")
     public List<WishPageResponse> fetchWishesGrantedByUser(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
                                                            @RequestParam Optional<Integer> limit,
                                                            @RequestParam Optional<String> sort,
@@ -80,6 +80,17 @@ public class WishesController {
         List<WishEntity> wishEntities = wishService.fetchWishesGrantedByUser(userId, pageable);
         return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
+
+    @GetMapping("/active/{user_id}")
+    public List<WishPageResponse> fetchActiveWishesByUser(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
+                                                          @RequestParam Optional<Integer> limit,
+                                                          @RequestParam Optional<String> sort,
+                                                          @RequestParam Optional<String> direction) {
+        Pageable pageable = getPageable(page, limit, sort, direction);
+        List<WishEntity> wishEntities = wishService.fetchActiveWishesByUser(userId, pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
+    }
+
 
 
     @GetMapping("/liked/{user_id}")
@@ -119,6 +130,8 @@ public class WishesController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         wishService.deleteWish(wishId);
     }
+
+
 
     private Pageable getPageable(Optional<Integer> page, Optional<Integer> limit, Optional<String> sort, Optional<String> direction) {
         Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);

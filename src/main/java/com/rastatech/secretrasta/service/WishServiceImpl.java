@@ -95,6 +95,16 @@ public class WishServiceImpl implements WishService {
         return donatedByUser;
     }
 
+    @Override
+    public List<WishEntity> fetchActiveWishesByUser(Long userId, Pageable pageable) {
+        List<WishEntity> activeWishes = fetchWishesByUser(userId, pageable)
+                .stream()
+                .filter(wish -> wish.getRastagemsDonated() != wish.getRastagemsRequired())
+                .collect(Collectors.toList());
+        activeWishes.forEach(wish -> wish.setIsLiked(userId));
+        return activeWishes;
+    }
+
     private UserEntity fetchUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
