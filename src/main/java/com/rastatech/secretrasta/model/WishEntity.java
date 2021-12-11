@@ -52,6 +52,7 @@ public class WishEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wish", cascade = CascadeType.ALL)
     private List<WishVoteEntity> votes;
 
+    @Builder.Default
     private boolean deleted = Boolean.FALSE;
 
     @Transient

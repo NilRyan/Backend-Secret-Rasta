@@ -66,7 +66,7 @@ public class GemsController {
             TransactionHistoryResponse donation = TransactionHistoryResponse.builder()
                     .transactionDate(dateTime.toLocalDate())
                     .transactionTime(dateTime.toLocalTime())
-                    .transactionDetails("Donation to Wish" + transaction.getDonationId())
+                    .transactionDetails("Donation to Wish " + transaction.getWish().getWishId())
                     .amount("-" + transaction.getAmount())
                     .build();
             transactionHistory.add(donation);
@@ -76,7 +76,7 @@ public class GemsController {
             TransactionHistoryResponse donation = TransactionHistoryResponse.builder()
                     .transactionDate(dateTime.toLocalDate())
                     .transactionTime(dateTime.toLocalTime())
-                    .transactionDetails("Receive donation" + transaction.getDonationId())
+                    .transactionDetails("Received donation " + transaction.getDonationId())
                     .amount("+" + transaction.getAmount())
                     .build();
             transactionHistory.add(donation);
@@ -86,7 +86,7 @@ public class GemsController {
             TransactionHistoryResponse sendGemTransac = TransactionHistoryResponse.builder()
                     .transactionDate(dateTime.toLocalDate())
                     .transactionTime(dateTime.toLocalTime())
-                    .transactionDetails("Send Rasta Gems to " + transaction.getSendGemTo())
+                    .transactionDetails("Sent Rasta Gems to User " + transaction.getSendGemTo().getUserId())
                     .amount("-" + transaction.getAmount())
                     .build();
             transactionHistory.add(sendGemTransac);
@@ -97,7 +97,7 @@ public class GemsController {
             TransactionHistoryResponse receivedGemsTransac = TransactionHistoryResponse.builder()
                     .transactionDate(dateTime.toLocalDate())
                     .transactionTime(dateTime.toLocalTime())
-                    .transactionDetails("Receive Rasta Gems from" + transaction.getSendGemFrom())
+                    .transactionDetails("Received Rasta Gems from User" + transaction.getSendGemFrom().getUserId())
                     .amount("+" + transaction.getAmount())
                     .build();
             transactionHistory.add(receivedGemsTransac);
