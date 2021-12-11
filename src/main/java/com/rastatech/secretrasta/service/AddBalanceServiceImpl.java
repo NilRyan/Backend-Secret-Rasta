@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AddBalanceServiceImpl implements AddBalanceService {
@@ -28,4 +30,10 @@ public class AddBalanceServiceImpl implements AddBalanceService {
         addBalanceEntity.setUser(user);
         addBalanceRepository.save(addBalanceEntity);
     }
+
+    @Override
+    public List<AddBalanceEntity> fetchAddBalanceTransactions(String username) {
+        return addBalanceRepository.findByUser_Username(username);
+    }
+
 }

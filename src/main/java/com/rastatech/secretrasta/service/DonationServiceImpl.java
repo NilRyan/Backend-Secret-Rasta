@@ -59,18 +59,23 @@ public class DonationServiceImpl implements DonationService {
     }
 
     @Override
-    public int fetchDonationsByWish(Long wishId) {
-        WishEntity wish = wishRepository.findById(wishId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        List<DonationEntity> donations = donationRepository.findByWish(wish);
-        return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
+    public List<DonationEntity> fetchDonationsByUser(String username) {
+        return donationRepository.findByUser_Username(username);
     }
 
-    @Override
-    public int fetchDonationsByUser(Long userId) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        List<DonationEntity> donations = donationRepository.findByUser(user);
-        return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
-    }
+//    @Override
+//    public int fetchDonationsByWish(Long wishId) {
+//        WishEntity wish = wishRepository.findById(wishId)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        List<DonationEntity> donations = donationRepository.findByWish(wish);
+//        return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
+//    }
+//
+//    @Override
+//    public int fetchDonationsByUser(Long userId) {
+//        UserEntity user = userRepository.findById(userId)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        List<DonationEntity> donations = donationRepository.findByUser(user);
+//        return donations.stream().map(DonationEntity::getAmount).mapToInt(Integer::intValue).sum();
+//    }
 }
