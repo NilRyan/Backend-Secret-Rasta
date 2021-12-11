@@ -1,7 +1,8 @@
-package com.rastatech.secretrasta.dto;
+package com.rastatech.secretrasta.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.rastatech.secretrasta.model.VoteType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class RoleToUserRequest {
-    private String username;
-    private String roleName;
+public class WishVoteResponse {
+
+    private Long voteId;
+    private VoteType voteType;
 }

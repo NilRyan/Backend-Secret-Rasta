@@ -1,4 +1,4 @@
-package com.rastatech.secretrasta.dto;
+package com.rastatech.secretrasta.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -6,17 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class DonationRequest {
-
-    @NotNull
-    @Min(1)
-    private int amount;
+public class TransactionHistoryResponse {
+    private LocalDate transactionDate;
+    private LocalTime transactionTime;
+    private String amount;
+    private String transactionDetails;
 }

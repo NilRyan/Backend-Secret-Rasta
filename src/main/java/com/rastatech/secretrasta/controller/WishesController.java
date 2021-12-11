@@ -1,9 +1,9 @@
 package com.rastatech.secretrasta.controller;
 
-import com.rastatech.secretrasta.dto.UpdateWishRequest;
-import com.rastatech.secretrasta.dto.WishPageResponse;
-import com.rastatech.secretrasta.dto.WishRequest;
-import com.rastatech.secretrasta.dto.WishResponse;
+import com.rastatech.secretrasta.dto.request.UpdateWishRequest;
+import com.rastatech.secretrasta.dto.response.WishPageResponse;
+import com.rastatech.secretrasta.dto.request.WishRequest;
+import com.rastatech.secretrasta.dto.response.WishResponse;
 import com.rastatech.secretrasta.model.WishEntity;
 import com.rastatech.secretrasta.service.UserService;
 import com.rastatech.secretrasta.service.WishService;

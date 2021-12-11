@@ -1,8 +1,8 @@
 //package com.rastatech.secretrasta.controller;
 //
-//import com.rastatech.secretrasta.dto.CommentRequest;
-//import com.rastatech.secretrasta.dto.CommentResponse;
-//import com.rastatech.secretrasta.dto.UpdateCommentRequest;
+//import com.rastatech.secretrasta.dto.request.CommentRequest;
+//import com.rastatech.secretrasta.dto.response.CommentResponse;
+//import com.rastatech.secretrasta.dto.request.UpdateCommentRequest;
 //import com.rastatech.secretrasta.model.CommentEntity;
 //import com.rastatech.secretrasta.service.CommentService;
 //import com.rastatech.secretrasta.service.UserService;

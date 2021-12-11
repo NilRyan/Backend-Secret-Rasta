@@ -1,6 +1,6 @@
 package com.rastatech.secretrasta.controller;
 
-import com.rastatech.secretrasta.dto.DonationRequest;
+import com.rastatech.secretrasta.dto.request.DonationRequest;
 import com.rastatech.secretrasta.service.DonationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

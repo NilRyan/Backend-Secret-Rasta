@@ -1,7 +1,6 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.DonationRequest;
-import com.rastatech.secretrasta.exceptions.NotEnoughGemsException;
+import com.rastatech.secretrasta.dto.request.DonationRequest;
 import com.rastatech.secretrasta.model.DonationEntity;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.model.WishEntity;

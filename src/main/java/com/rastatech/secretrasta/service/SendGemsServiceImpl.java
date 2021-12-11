@@ -1,6 +1,6 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.SendGemsRequest;
+import com.rastatech.secretrasta.dto.request.SendGemsRequest;
 import com.rastatech.secretrasta.exceptions.NotEnoughGemsException;
 import com.rastatech.secretrasta.model.SendGemsEntity;
 import com.rastatech.secretrasta.model.UserEntity;

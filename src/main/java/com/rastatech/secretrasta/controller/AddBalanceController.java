@@ -1,9 +1,7 @@
 package com.rastatech.secretrasta.controller;
 
-import com.rastatech.secretrasta.dto.AddBalanceRequest;
-import com.rastatech.secretrasta.dto.DonationRequest;
+import com.rastatech.secretrasta.dto.request.AddBalanceRequest;
 import com.rastatech.secretrasta.service.AddBalanceService;
-import com.rastatech.secretrasta.service.DonationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;

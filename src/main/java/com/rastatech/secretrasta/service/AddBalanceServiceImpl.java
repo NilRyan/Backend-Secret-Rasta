@@ -1,6 +1,6 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.AddBalanceRequest;
+import com.rastatech.secretrasta.dto.request.AddBalanceRequest;
 import com.rastatech.secretrasta.model.AddBalanceEntity;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.repository.AddBalanceRepository;

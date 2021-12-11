@@ -1,6 +1,6 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.WishVoteRequest;
+import com.rastatech.secretrasta.dto.request.WishVoteRequest;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.model.VoteType;
 import com.rastatech.secretrasta.model.WishEntity;

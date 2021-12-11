@@ -1,7 +1,7 @@
 package com.rastatech.secretrasta;
 
-import com.rastatech.secretrasta.dto.DonationRequest;
-import com.rastatech.secretrasta.dto.WishVoteRequest;
+import com.rastatech.secretrasta.dto.request.DonationRequest;
+import com.rastatech.secretrasta.dto.request.WishVoteRequest;
 import com.rastatech.secretrasta.model.*;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.repository.WishRepository;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @SpringBootApplication
