@@ -40,7 +40,7 @@ public class DonationServiceImpl implements DonationService {
         UserEntity fromUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (toUser.equals(fromUser)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
+        if (wish.getRastagemsRequired() == wish.getRastagemsDonated()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         int rastaGemsRequired = wish.getRastagemsRequired();
         int currentRastaGems = wish.getRastagemsDonated();
         int donationAmount = donation.getAmount();
