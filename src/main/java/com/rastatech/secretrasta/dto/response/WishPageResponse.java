@@ -23,4 +23,5 @@ public class WishPageResponse {
     private int downvotes;
     private String wishOwnerFullName;
     private String wishOwnerUsername;
+    private String voteStatus;
 }

@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "wishes")
@@ -62,6 +63,9 @@ public class WishEntity {
     private String wishOwnerUsername;
 
     @Transient
+    private String voteStatus;
+
+    @Transient
     private boolean isLiked;
 
     @Transient
@@ -81,6 +85,16 @@ public class WishEntity {
 
     public void setIsLiked(Long userId) {
         isLiked = likes.stream().filter(like -> Objects.equals(like.getUser().getUserId(), userId)).count() == 1;
+    }
+
+    public void setVoteStatus(Long userId) {
+        List<WishVoteEntity> v = votes.stream().filter( vote -> Objects.equals(vote.getUser().getUserId(), userId)).collect(Collectors.toList());
+
+        if (v.size() == 0) {
+            voteStatus = "NONE";
+        } else if (v.size() == 1) {
+            voteStatus = v.get(0).getVoteType().name();
+        }
     }
 
     public int getUpvotes() {

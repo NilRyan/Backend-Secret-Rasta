@@ -33,9 +33,10 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishEntity> fetchWishes(Pageable pageable) {
+    public List<WishEntity> fetchWishes(Long userId, Pageable pageable) {
         List<WishEntity> wishes = wishRepository.findByDeletedFalse(pageable);
-        wishes.forEach(wish -> wish.setIsLiked(wish.getUser().getUserId()));
+        setIsLiked(userId, wishes);
+        setVoteStatus(userId, wishes);
         return wishes;
     }
 
@@ -43,7 +44,8 @@ public class WishServiceImpl implements WishService {
     public List<WishEntity> fetchWishesByUser(Long userId, Pageable pageable) {
         UserEntity user = fetchUser(userId);
         List<WishEntity> wishes = wishRepository.findByUserAndDeletedFalse(user, pageable);
-        wishes.forEach(wish -> wish.setIsLiked(wish.getUser().getUserId()));
+        setIsLiked(userId, wishes);
+        setVoteStatus(userId, wishes);
         return wishes;
     }
 
@@ -68,6 +70,7 @@ public class WishServiceImpl implements WishService {
     public WishEntity fetchWishWithMoreDetails(Long wishId, Long userId) {
         WishEntity wish = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         wish.setIsLiked(userId);
+        wish.setVoteStatus(userId);
         return wish;
     }
 
@@ -77,21 +80,24 @@ public class WishServiceImpl implements WishService {
                 .stream()
                 .filter(wish -> wish.getRastagemsDonated() == wish.getRastagemsRequired())
                 .collect(Collectors.toList());
-        grantedUserWishes.forEach(wish -> wish.setIsLiked(userId));
+        setIsLiked(userId, grantedUserWishes);
+        setVoteStatus(userId, grantedUserWishes);
         return grantedUserWishes;
     }
 
     @Override
     public List<WishEntity> fetchLikedWishes(Long userId, Pageable pageable) {
         List<WishEntity> likedByUser = wishRepository.findByLikes_User_UserIdAndDeletedFalse(userId, pageable);
-        likedByUser.forEach(wish -> wish.setIsLiked(userId));
+        setIsLiked(userId, likedByUser);
+        setVoteStatus(userId, likedByUser);
         return likedByUser;
     }
 
     @Override
     public List<WishEntity> fetchDonatedWishes(Long userId, Pageable pageable) {
         List<WishEntity> donatedByUser = wishRepository.findDistinctByDonations_User_UserIdAndDeletedFalse(userId, pageable);
-        donatedByUser.forEach(wish -> wish.setIsLiked(userId));
+        setIsLiked(userId, donatedByUser);
+        setVoteStatus(userId, donatedByUser);
         return donatedByUser;
     }
 
@@ -101,10 +107,17 @@ public class WishServiceImpl implements WishService {
                 .stream()
                 .filter(wish -> wish.getRastagemsDonated() != wish.getRastagemsRequired())
                 .collect(Collectors.toList());
-        activeWishes.forEach(wish -> wish.setIsLiked(userId));
+        setIsLiked(userId, activeWishes);
+        setVoteStatus(userId, activeWishes);
         return activeWishes;
     }
 
+    private void setIsLiked(Long userId, List<WishEntity> wishes) {
+        wishes.forEach(wish -> wish.setIsLiked(userId));
+    }
+    private void setVoteStatus(Long userId, List<WishEntity> wishes) {
+        wishes.forEach(wish -> wish.setVoteStatus(userId));
+    }
     private UserEntity fetchUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

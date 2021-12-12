@@ -45,9 +45,11 @@ public class WishesController {
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> limit,
             @RequestParam Optional<String> sort,
-            @RequestParam Optional<String> direction) {
+            @RequestParam Optional<String> direction, Authentication auth) {
         Pageable pageable = getPageable(page, limit, sort, direction);
-        List<WishEntity> wishEntities = wishService.fetchWishes(pageable);
+        String username = (String) auth.getPrincipal();
+        Long userId = userService.fetchUserByUsername(username).getUserId();
+        List<WishEntity> wishEntities = wishService.fetchWishes(userId, pageable);
         return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
 
     }
