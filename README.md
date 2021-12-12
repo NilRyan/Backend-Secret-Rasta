@@ -41,9 +41,10 @@ Swagger API docs @ <baseUrl>/swagger-ui.html#/
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 - [PostgreSQL](https://www.postgresql.org/) - Database
+ERD
 <p align="center">
   <a href="" rel="noopener">
- <img src="https://user-images.githubusercontent.com/76242678/145715088-d43d443a-07e2-494b-8dc0-d3b61778c2d9.png" alt="ERD"></a>
+ <img src="https://user-images.githubusercontent.com/76242678/145715243-01b49f8c-6c2d-4f9c-b5f5-9771d00ec3bd.png" alt="ERD"></a>
 </p>
 - [Spring](https://spring.io/) - Server Framework with Spring Boot for AutoConfig <3
 - [Java](https://www.java.com/en/) - Language
