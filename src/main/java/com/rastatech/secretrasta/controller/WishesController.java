@@ -4,6 +4,7 @@ import com.rastatech.secretrasta.dto.request.UpdateWishRequest;
 import com.rastatech.secretrasta.dto.response.WishPageResponse;
 import com.rastatech.secretrasta.dto.request.WishRequest;
 import com.rastatech.secretrasta.dto.response.WishResponse;
+import com.rastatech.secretrasta.dto.response.WishesStatusResponse;
 import com.rastatech.secretrasta.model.WishEntity;
 import com.rastatech.secretrasta.service.UserService;
 import com.rastatech.secretrasta.service.WishService;
@@ -79,7 +80,7 @@ public class WishesController {
                                                            @RequestParam Optional<String> sort,
                                                            @RequestParam Optional<String> direction) {
         Pageable pageable = getPageable(page, limit, sort, direction);
-        List<WishEntity> wishEntities = wishService.fetchWishesGrantedByUser(userId, pageable);
+        List<WishEntity> wishEntities = wishService.fetchWishesFulfilledByUser(userId, pageable);
         return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
 
@@ -91,6 +92,16 @@ public class WishesController {
         Pageable pageable = getPageable(page, limit, sort, direction);
         List<WishEntity> wishEntities = wishService.fetchActiveWishesByUser(userId, pageable);
         return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
+    }
+
+    @GetMapping("/status/{user_id}")
+    public WishesStatusResponse fetchActiveWishesByUser(@PathVariable("user_id") Long userId) {
+        int activeWishes = wishService.activeWishCount(userId);
+        int fulfilledWishes = wishService.fulfilledWishCount(userId);
+        return WishesStatusResponse.builder()
+                .activeWishes(activeWishes)
+                .fulfilledWishes(fulfilledWishes)
+                .build();
     }
 
 

@@ -75,7 +75,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishEntity> fetchWishesGrantedByUser(Long userId, Pageable pageable) {
+    public List<WishEntity> fetchWishesFulfilledByUser(Long userId, Pageable pageable) {
         List<WishEntity> grantedUserWishes = fetchWishesByUser(userId, pageable)
                 .stream()
                 .filter(wish -> wish.getRastagemsDonated() == wish.getRastagemsRequired())
@@ -84,6 +84,8 @@ public class WishServiceImpl implements WishService {
         setVoteStatus(userId, grantedUserWishes);
         return grantedUserWishes;
     }
+
+
 
     @Override
     public List<WishEntity> fetchLikedWishes(Long userId, Pageable pageable) {
@@ -99,6 +101,22 @@ public class WishServiceImpl implements WishService {
         setIsLiked(userId, donatedByUser);
         setVoteStatus(userId, donatedByUser);
         return donatedByUser;
+    }
+
+    @Override
+    public int activeWishCount(Long userId) {
+        return (int) wishRepository.findByUser_UserId(userId)
+                .stream()
+                .filter(wish -> wish.getRastagemsDonated() != wish.getRastagemsRequired())
+                .count();
+    }
+
+    @Override
+    public int fulfilledWishCount(Long userId) {
+        return (int) wishRepository.findByUser_UserId(userId)
+                .stream()
+                .filter(wish -> wish.getRastagemsDonated() == wish.getRastagemsRequired())
+                .count();
     }
 
     @Override
