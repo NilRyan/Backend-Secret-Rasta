@@ -44,12 +44,12 @@ public class GemsController {
         addBalanceService.addBalance(username, addBalanceRequest);
     }
 
-    @PostMapping("/transfer/{user_id}")
-    public void sendRastaGemsToUser(@PathVariable("user_id") Long sendToUserId,
+    @PostMapping("/transfer/{username}")
+    public void sendRastaGemsToUser(@PathVariable("username") String toUsername,
                                     @Valid @RequestBody SendGemsRequest sendGemsRequest,
                                     Authentication auth) {
         String username = (String) auth.getPrincipal();
-        sendGemsService.sendGemsToUser(sendToUserId, username, sendGemsRequest);
+        sendGemsService.sendGemsToUser(toUsername, username, sendGemsRequest);
     }
 
     @GetMapping("/history")

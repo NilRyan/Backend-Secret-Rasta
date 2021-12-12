@@ -5,7 +5,7 @@ import com.rastatech.secretrasta.model.SendGemsEntity;
 import java.util.List;
 
 public interface SendGemsService {
-    void sendGemsToUser(Long sendToUserId, String username, SendGemsRequest sendGemsRequest);
+    void sendGemsToUser(String toUsername, String username, SendGemsRequest sendGemsRequest);
     List<SendGemsEntity> fetchSendGemsTransactions(String username);
     List<SendGemsEntity> fetchReceiveGemsTransactions(String username);
 }

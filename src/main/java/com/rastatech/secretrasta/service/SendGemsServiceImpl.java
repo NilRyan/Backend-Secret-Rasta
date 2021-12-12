@@ -23,8 +23,8 @@ public class SendGemsServiceImpl implements SendGemsService {
 
     @Override
     @Transactional
-    public void sendGemsToUser(Long sendToUserId, String username, SendGemsRequest sendGemsRequest) {
-        UserEntity toUser = userRepository.findById(sendToUserId)
+    public void sendGemsToUser(String toUsername, String username, SendGemsRequest sendGemsRequest) {
+        UserEntity toUser = userRepository.findByUsername(toUsername)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         UserEntity fromUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
