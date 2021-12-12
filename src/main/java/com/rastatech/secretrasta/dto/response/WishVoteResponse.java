@@ -1,19 +1,18 @@
-package com.rastatech.secretrasta.dto;
+package com.rastatech.secretrasta.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.rastatech.secretrasta.model.VoteType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotEmpty;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UpdateCommentRequest {
+public class WishVoteResponse {
 
-    @NotEmpty
-    private String comment;
+    private Long voteId;
+    private VoteType voteType;
 }

@@ -1,6 +1,6 @@
 package com.rastatech.secretrasta.service;
 
-import com.rastatech.secretrasta.dto.UpdateUserRequest;
+import com.rastatech.secretrasta.dto.request.UpdateUserRequest;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final DonationService donationService;
     private final ModelMapper modelMapper;
 
     @Override
@@ -49,7 +48,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int fetchBalance(Long userId) {
-        return fetchUser(userId).getRastaGemsBalance() -
-                donationService.fetchDonationsByUser(userId);
+        return fetchUser(userId).getRastaGemsBalance();
     }
 }

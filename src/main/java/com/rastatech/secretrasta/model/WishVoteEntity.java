@@ -21,10 +21,8 @@ public class WishVoteEntity {
     private VoteType voteType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private WishEntity wish;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity user;
 }

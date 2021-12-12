@@ -1,4 +1,4 @@
-package com.rastatech.secretrasta.dto;
+package com.rastatech.secretrasta.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -18,7 +18,10 @@ public class WishPageResponse {
     private String description;
     private int rastagemsRequired;
     private int rastagemsDonated;
-    private boolean liked;
+    private boolean isLiked;
     private int upvotes;
     private int downvotes;
+    private String wishOwnerFullName;
+    private String wishOwnerUsername;
+    private String voteStatus;
 }

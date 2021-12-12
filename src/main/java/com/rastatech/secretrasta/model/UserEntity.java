@@ -2,24 +2,27 @@ package com.rastatech.secretrasta.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.rastatech.secretrasta.exceptions.NotEnoughGemsException;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Table(name = "users")
+@Builder
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserEntity {
     @Id
@@ -39,15 +42,39 @@ public class UserEntity {
 
     @Column(unique = true)
     private String phoneNumber;
+    @Builder.Default
     private boolean enabled = true;
     private String password;
 
     @Column(unique = true)
     private String username;
 
-    private int rastaGemsBalance = 100;
+    @Builder.Default
+    private int rastaGemsBalance = 888;
     private String avatar;
 
+    @Builder.Default
     @ManyToMany(fetch = EAGER)
     private Collection<Role> roles = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<WishEntity> wishes;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<LikeEntity> likes;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<DonationEntity> donations;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<WishVoteEntity> votes;
+
+    public void addBalance(int amount) {
+        this.rastaGemsBalance = rastaGemsBalance + amount;
+    }
+
+    public void decreaseBalance(int amount) {
+        if (amount > this.rastaGemsBalance) throw new NotEnoughGemsException();
+        this.rastaGemsBalance = rastaGemsBalance - amount;
+    }
 }

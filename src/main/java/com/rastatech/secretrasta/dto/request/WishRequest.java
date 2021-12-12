@@ -1,4 +1,4 @@
-package com.rastatech.secretrasta.dto;
+package com.rastatech.secretrasta.dto.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -12,25 +12,18 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class NewUserRequest {
-
-    @Email(regexp = ".+@.+\\..+")
-    @NotBlank
-    private String email;
+public class WishRequest {
 
     @NotEmpty
-    private String firstName;
+    private String wishName;
 
     @NotEmpty
-    private String lastName;
+    private String imageUrl;
 
     @NotEmpty
-    @Pattern(regexp = "[0-9]{11}")
-    private String phoneNumber;
+    private String description;
 
-    @NotEmpty
-    private String password;
-
-    @NotEmpty
-    private String username;
+    @NotNull
+    @Min(0)
+    private Integer rastagemsRequired;
 }

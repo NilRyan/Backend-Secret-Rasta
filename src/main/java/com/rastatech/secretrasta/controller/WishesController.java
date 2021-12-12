@@ -1,11 +1,11 @@
 package com.rastatech.secretrasta.controller;
 
-import com.rastatech.secretrasta.dto.UpdateWishRequest;
-import com.rastatech.secretrasta.dto.WishPageResponse;
-import com.rastatech.secretrasta.dto.WishRequest;
-import com.rastatech.secretrasta.dto.WishResponse;
+import com.rastatech.secretrasta.dto.request.UpdateWishRequest;
+import com.rastatech.secretrasta.dto.response.WishPageResponse;
+import com.rastatech.secretrasta.dto.request.WishRequest;
+import com.rastatech.secretrasta.dto.response.WishResponse;
+import com.rastatech.secretrasta.dto.response.WishesStatusResponse;
 import com.rastatech.secretrasta.model.WishEntity;
-import com.rastatech.secretrasta.repository.WishRepository;
 import com.rastatech.secretrasta.service.UserService;
 import com.rastatech.secretrasta.service.WishService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -41,15 +42,27 @@ public class WishesController {
     }
 
     @GetMapping
-    public List<WishPageResponse> fetchWishes() {
-        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
-        return wishService.fetchWishes(sortedBy);
+    public List<WishPageResponse> fetchWishes(
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> limit,
+            @RequestParam Optional<String> sort,
+            @RequestParam Optional<String> direction, Authentication auth) {
+        Pageable pageable = getPageable(page, limit, sort, direction);
+        String username = (String) auth.getPrincipal();
+        Long userId = userService.fetchUserByUsername(username).getUserId();
+        List<WishEntity> wishEntities = wishService.fetchWishes(userId, pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
+
     }
 
     @GetMapping("/user/{user_id}")
-    public List<WishResponse> fetchWishesByUser(@PathVariable("user_id") Long userId) {
-        List<WishEntity> wishes = wishService.fetchWishesByUser(userId);
-        return wishes.stream().map(this::mapToWishResponse).collect(Collectors.toList());
+    public List<WishPageResponse> fetchWishesByUser(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
+                                                @RequestParam Optional<Integer> limit,
+                                                @RequestParam Optional<String> sort,
+                                                @RequestParam Optional<String> direction) {
+        Pageable pageable = getPageable(page, limit, sort, direction);
+        List<WishEntity> wishes = wishService.fetchWishesByUser(userId, pageable);
+        return wishes.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/{wish_id}")
@@ -57,24 +70,61 @@ public class WishesController {
                                       Authentication auth) {
         String username = (String) auth.getPrincipal();
         Long userId = userService.fetchUserByUsername(username).getUserId();
-        return wishService.fetchWishWithMoreDetails(wishId, userId);
+        WishEntity wish = wishService.fetchWishWithMoreDetails(wishId, userId);
+        return mapToWishPageResponse(wish);
     }
 
-    @GetMapping("/granted/{user_id}")
-    public List<WishPageResponse> fetchWishesGrantedByUser(@PathVariable("user_id") Long userId) {
-        Pageable sortedBy = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
-        return wishService.fetchWishesGrantedByUser(userId, sortedBy);
+    @GetMapping("/fulfilled/{user_id}")
+    public List<WishPageResponse> fetchWishesGrantedByUser(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
+                                                           @RequestParam Optional<Integer> limit,
+                                                           @RequestParam Optional<String> sort,
+                                                           @RequestParam Optional<String> direction) {
+        Pageable pageable = getPageable(page, limit, sort, direction);
+        List<WishEntity> wishEntities = wishService.fetchWishesFulfilledByUser(userId, pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
+
+    @GetMapping("/active/{user_id}")
+    public List<WishPageResponse> fetchActiveWishesByUser(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
+                                                          @RequestParam Optional<Integer> limit,
+                                                          @RequestParam Optional<String> sort,
+                                                          @RequestParam Optional<String> direction) {
+        Pageable pageable = getPageable(page, limit, sort, direction);
+        List<WishEntity> wishEntities = wishService.fetchActiveWishesByUser(userId, pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
+    }
+
+    @GetMapping("/status/{user_id}")
+    public WishesStatusResponse fetchWishesStatusByUser(@PathVariable("user_id") Long userId) {
+        int activeWishes = wishService.activeWishCount(userId);
+        int fulfilledWishes = wishService.fulfilledWishCount(userId);
+        return WishesStatusResponse.builder()
+                .activeWishes(activeWishes)
+                .fulfilledWishes(fulfilledWishes)
+                .build();
+    }
+
+
 
     @GetMapping("/liked/{user_id}")
-    public List<WishPageResponse> fetchLikedWishes(@PathVariable("user_id") Long userId) {
-        Pageable sortedBy = PageRequest.of(0, 10);
-        return wishService.fetchLikedWishes(userId, sortedBy);
+    public List<WishPageResponse> fetchLikedWishes(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
+                                                   @RequestParam Optional<Integer> limit,
+                                                   @RequestParam Optional<String> sort,
+                                                   @RequestParam Optional<String> direction) {
+        Pageable pageable = getPageable(page, limit, sort, direction);
+        List<WishEntity> wishEntities = wishService.fetchLikedWishes(userId, pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/donated/{user_id}")
-    public List<WishPageResponse> fetchDonatedWishes(@PathVariable("user_id") Long userId) {
-        return wishService.fetchDonatedWishes(userId);
+
+    public List<WishPageResponse> fetchWishesDonatedByUser(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
+                                                           @RequestParam Optional<Integer> limit,
+                                                           @RequestParam Optional<String> sort,
+                                                           @RequestParam Optional<String> direction) {
+        Pageable pageable = getPageable(page, limit, sort, direction);
+        List<WishEntity> wishEntities = wishService.fetchDonatedWishes(userId, pageable);
+        return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
     }
 
     @PutMapping("/{wish_id}")
@@ -94,7 +144,23 @@ public class WishesController {
         wishService.deleteWish(wishId);
     }
 
+
+
+    private Pageable getPageable(Optional<Integer> page, Optional<Integer> limit, Optional<String> sort, Optional<String> direction) {
+        Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);
+        return PageRequest.of(page.orElse(0),
+                limit.orElse(10),
+                sortDirection,
+                sort.orElse("updatedAt"));
+    }
+
     private WishResponse mapToWishResponse(WishEntity wish) {
         return modelMapper.map(wish, WishResponse.class);
     }
+
+    private WishPageResponse mapToWishPageResponse(WishEntity wish) {
+        return modelMapper.map(wish, WishPageResponse.class);
+    }
+
 }
+

@@ -1,34 +1,30 @@
 package com.rastatech.secretrasta.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "donations")
-@Data
+@Table(name = "send_gems")
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DonationEntity {
+public class SendGemsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long donationId;
+    private Long sendGemId;
 
     private int amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private WishEntity wish;
+    private UserEntity sendGemFrom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity user;
+    private UserEntity sendGemTo;
 
     @CreationTimestamp
     private LocalDateTime transactionDate;
