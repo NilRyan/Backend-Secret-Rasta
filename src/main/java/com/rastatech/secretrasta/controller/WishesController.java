@@ -95,7 +95,7 @@ public class WishesController {
     }
 
     @GetMapping("/status/{user_id}")
-    public WishesStatusResponse fetchActiveWishesByUser(@PathVariable("user_id") Long userId) {
+    public WishesStatusResponse fetchWishesStatusByUser(@PathVariable("user_id") Long userId) {
         int activeWishes = wishService.activeWishCount(userId);
         int fulfilledWishes = wishService.fulfilledWishCount(userId);
         return WishesStatusResponse.builder()
