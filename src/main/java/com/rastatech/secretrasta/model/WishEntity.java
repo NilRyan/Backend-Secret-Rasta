@@ -56,6 +56,12 @@ public class WishEntity {
     private boolean deleted = Boolean.FALSE;
 
     @Transient
+    private String wishOwnerFullName;
+
+    @Transient
+    private String wishOwnerUsername;
+
+    @Transient
     private boolean isLiked;
 
     @Transient
@@ -64,6 +70,14 @@ public class WishEntity {
     @Transient
     private int downvotes;
 
+
+    public String getWishOwnerUsername() {
+        return this.user.getUsername();
+    }
+
+    public String getWishOwnerFullName() {
+        return this.user.getFirstName() + " " + this.user.getLastName();
+    }
 
     public void setIsLiked(Long userId) {
         isLiked = likes.stream().filter(like -> Objects.equals(like.getUser().getUserId(), userId)).count() == 1;

@@ -21,4 +21,6 @@ public class WishPageResponse {
     private boolean isLiked;
     private int upvotes;
     private int downvotes;
+    private String wishOwnerFullName;
+    private String wishOwnerUsername;
 }
