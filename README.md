@@ -32,7 +32,14 @@ What things you need to install the software and how to install them.
 
 1. [OpenJDK11](https://openjdk.java.net/projects/jdk/11/)
 2. [Lombok](https://projectlombok.org/)
+3. [PostgreSQL](https://www.postgresql.org/)
 
+## 🔧 Running Locally
+- Configure Postgres Database defined at application.properties
+- To run the server on localhost:8080
+```
+  ./mvnw spring-boot:run
+```
 ## 🔧 Running the tests <a name = "tests"></a>
 No tests yet. :( 
 
