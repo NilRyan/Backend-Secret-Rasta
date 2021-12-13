@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -65,7 +66,7 @@ public class GemsController {
             LocalDateTime dateTime = transaction.getTransactionDate();
             TransactionHistoryResponse donation = TransactionHistoryResponse.builder()
                     .transactionDate(dateTime.toLocalDate())
-                    .transactionTime(dateTime.toLocalTime())
+                    .transactionTime(dateTime.toLocalTime().toString())
                     .transactionDetails("Donation to Wish " + transaction.getWish().getWishId())
                     .amount("-" + transaction.getAmount())
                     .build();
@@ -75,7 +76,7 @@ public class GemsController {
             LocalDateTime dateTime = transaction.getTransactionDate();
             TransactionHistoryResponse donation = TransactionHistoryResponse.builder()
                     .transactionDate(dateTime.toLocalDate())
-                    .transactionTime(dateTime.toLocalTime())
+                    .transactionTime(dateTime.toLocalTime().toString())
                     .transactionDetails("Received donation " + transaction.getDonationId())
                     .amount("+" + transaction.getAmount())
                     .build();
@@ -85,7 +86,7 @@ public class GemsController {
             LocalDateTime dateTime = transaction.getTransactionDate();
             TransactionHistoryResponse sendGemTransac = TransactionHistoryResponse.builder()
                     .transactionDate(dateTime.toLocalDate())
-                    .transactionTime(dateTime.toLocalTime())
+                    .transactionTime(dateTime.toLocalTime().toString())
                     .transactionDetails("Sent Rasta Gems to User " + transaction.getSendGemTo().getUserId())
                     .amount("-" + transaction.getAmount())
                     .build();
@@ -96,7 +97,7 @@ public class GemsController {
             LocalDateTime dateTime = transaction.getTransactionDate();
             TransactionHistoryResponse receivedGemsTransac = TransactionHistoryResponse.builder()
                     .transactionDate(dateTime.toLocalDate())
-                    .transactionTime(dateTime.toLocalTime())
+                    .transactionTime(dateTime.toLocalTime().toString())
                     .transactionDetails("Received Rasta Gems from User" + transaction.getSendGemFrom().getUserId())
                     .amount("+" + transaction.getAmount())
                     .build();
@@ -107,7 +108,7 @@ public class GemsController {
             LocalDateTime dateTime = transaction.getTransactionDate();
             TransactionHistoryResponse addBalanceTransac = TransactionHistoryResponse.builder()
                     .transactionDate(dateTime.toLocalDate())
-                    .transactionTime(dateTime.toLocalTime())
+                    .transactionTime(dateTime.toLocalTime().toString())
                     .transactionDetails("Add Balance")
                     .amount("+" + transaction.getAmount())
                     .build();
@@ -115,8 +116,8 @@ public class GemsController {
         });
 
         Comparator<TransactionHistoryResponse> compareByDate = (TransactionHistoryResponse t1, TransactionHistoryResponse t2) -> {
-            LocalDateTime dateT1 = LocalDateTime.of(t1.getTransactionDate(), t1.getTransactionTime());
-            LocalDateTime dateT2 = LocalDateTime.of(t2.getTransactionDate(), t2.getTransactionTime());
+            LocalDateTime dateT1 = LocalDateTime.of(t1.getTransactionDate(), LocalTime.parse(t1.getTransactionTime()));
+            LocalDateTime dateT2 = LocalDateTime.of(t2.getTransactionDate(), LocalTime.parse(t2.getTransactionTime()));
             return dateT2.compareTo(dateT1);
         };
 

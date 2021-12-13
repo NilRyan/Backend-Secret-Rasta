@@ -17,7 +17,7 @@ import java.time.LocalTime;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TransactionHistoryResponse {
     private LocalDate transactionDate;
-    private LocalTime transactionTime;
+    private String transactionTime;
     private String amount;
     private String transactionDetails;
 }
