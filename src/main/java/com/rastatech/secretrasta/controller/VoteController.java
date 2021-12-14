@@ -3,6 +3,7 @@ package com.rastatech.secretrasta.controller;
 import com.rastatech.secretrasta.dto.request.WishVoteRequest;
 import com.rastatech.secretrasta.service.UserService;
 import com.rastatech.secretrasta.service.WishVoteService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,10 @@ public class VoteController {
     private final UserService userService;
 
     @PostMapping
+    @ApiOperation(value = "Upvote, Downvote, or Unvote a wish",
+            notes = "When the wish is currently not voted by the user, using this api with any of the vote types UPVOTE or DOWNVOTE will save the vote on the wish." +
+                    "If the wish is currently voted, using this api with the same vote type as the current vote will cancel the vote and unvote the wish." +
+                    "If the wish is currently voted, using this api the opposite vote type as the current vote will replace the current vote with the opposite vote type.")
     public void vote(Authentication auth,
                      @PathVariable("wish_id") Long wishId,
                      @Valid @RequestBody WishVoteRequest vote) {
