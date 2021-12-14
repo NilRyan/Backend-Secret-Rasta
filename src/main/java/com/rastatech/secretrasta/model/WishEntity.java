@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
@@ -68,10 +69,10 @@ public class WishEntity {
     @Transient
     private boolean isLiked;
 
-    @Transient
+    @Formula("(SELECT COUNT(v.vote_type) FROM wish_votes v WHERE v.vote_type = 0 AND v.wish_wish_id = wish_id)")
     private int upvotes;
 
-    @Transient
+    @Formula("(SELECT COUNT(v.vote_type) FROM wish_votes v WHERE v.vote_type = 1 AND v.wish_wish_id = wish_id)")
     private int downvotes;
 
 
@@ -95,13 +96,5 @@ public class WishEntity {
         } else if (v.size() == 1) {
             voteStatus = v.get(0).getVoteType().name();
         }
-    }
-
-    public int getUpvotes() {
-        return (int) votes.stream().filter(a -> a.getVoteType().equals(VoteType.UPVOTE)).count();
-    }
-
-    public int getDownvotes() {
-        return  (int) votes.stream().filter(a -> a.getVoteType().equals(VoteType.DOWNVOTE)).count();
     }
 }
