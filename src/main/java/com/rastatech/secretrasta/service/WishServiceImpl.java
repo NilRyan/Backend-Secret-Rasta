@@ -76,10 +76,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishEntity> fetchWishesFulfilledByUser(Long userId, Pageable pageable) {
-        List<WishEntity> grantedUserWishes = fetchWishesByUser(userId, pageable)
-                .stream()
-                .filter(wish -> wish.getRastagemsDonated() == wish.getRastagemsRequired())
-                .collect(Collectors.toList());
+        List<WishEntity> grantedUserWishes = wishRepository.findFulfilledWishesByUserId(userId, pageable);
         setIsLiked(userId, grantedUserWishes);
         setVoteStatus(userId, grantedUserWishes);
         return grantedUserWishes;
@@ -121,10 +118,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishEntity> fetchActiveWishesByUser(Long userId, Pageable pageable) {
-        List<WishEntity> activeWishes = fetchWishesByUser(userId, pageable)
-                .stream()
-                .filter(wish -> wish.getRastagemsDonated() != wish.getRastagemsRequired())
-                .collect(Collectors.toList());
+        List<WishEntity> activeWishes = wishRepository.findActiveWishesByUserId(userId, pageable);
         setIsLiked(userId, activeWishes);
         setVoteStatus(userId, activeWishes);
         return activeWishes;
