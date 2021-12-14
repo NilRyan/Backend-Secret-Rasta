@@ -110,10 +110,10 @@ public class SecretRastaApplication {
 
 			wishRepository.saveAll(List.of(wish, wish2, wish3));
 
-			donationService.createDonation(wish.getWishId(), "Cots", new DonationRequest(50));
-			donationService.createDonation(wish2.getWishId(), "nilpogi", new DonationRequest(50));
-			donationService.createDonation(wish3.getWishId(), "nilpogi", new DonationRequest(8));
-			donationService.createDonation(wish.getWishId(), "Cots", new DonationRequest(50));
+//			donationService.createDonation(wish.getWishId(), "Cots", new DonationRequest(50));
+//			donationService.createDonation(wish2.getWishId(), "nilpogi", new DonationRequest(50));
+//			donationService.createDonation(wish3.getWishId(), "nilpogi", new DonationRequest(8));
+//			donationService.createDonation(wish.getWishId(), "Cots", new DonationRequest(50));
 
 			likeService.like(wish.getWishId(), user.getUserId());
 			likeService.like(wish2.getWishId(), user.getUserId());

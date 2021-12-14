@@ -14,6 +14,7 @@ import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.service.RoleService;
 import com.rastatech.secretrasta.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
@@ -51,6 +52,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
+    @ApiOperation(value = "Create a user and store in database",
+            notes = "Provide the request body as specified below. Username, phone_number (11 digits), email must be unique")
     public ResponseEntity<?> createUser(@Valid @RequestBody NewUserRequest user) {
         Map<String, String> resultMap = new HashMap<>();
         try {
