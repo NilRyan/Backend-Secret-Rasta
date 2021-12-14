@@ -18,4 +18,6 @@ public interface WishRepository extends CrudRepository<WishEntity, Long> {
     List<WishEntity> findByDeletedFalse(Pageable pageable);
     List<WishEntity> findByLikes_User_UserIdAndDeletedFalse(Long userId, Pageable pageable);
     List<WishEntity> findDistinctByDonations_User_UserIdAndDeletedFalse(Long userId, Pageable pageable);
+
+
 }
