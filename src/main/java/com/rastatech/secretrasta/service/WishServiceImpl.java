@@ -57,6 +57,8 @@ public class WishServiceImpl implements WishService {
     @Override
     public void updateWish(Long wishId, UpdateWishRequest wish) {
         WishEntity wishEntity = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (wish.getRastagemsRequired() != null && wish.getRastagemsRequired() <= wishEntity.getRastagemsDonated())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         modelMapper.map(wish, wishEntity);
         wishRepository.save(wishEntity);
     }

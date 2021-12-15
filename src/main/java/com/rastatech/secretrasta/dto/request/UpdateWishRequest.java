@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,5 +16,7 @@ public class UpdateWishRequest {
     private String wishName;
     private String imageUrl;
     private String description;
-    private int rastagemsRequired;
+
+    @Min(1)
+    private Integer rastagemsRequired;
 }

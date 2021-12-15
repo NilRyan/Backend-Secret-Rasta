@@ -24,6 +24,6 @@ public class WishRequest {
     private String description;
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private Integer rastagemsRequired;
 }
