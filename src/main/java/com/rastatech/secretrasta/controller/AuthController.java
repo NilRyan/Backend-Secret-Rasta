@@ -12,6 +12,7 @@ import com.rastatech.secretrasta.exceptions.FieldNotAvailableException;
 import com.rastatech.secretrasta.model.Role;
 import com.rastatech.secretrasta.model.UserEntity;
 import com.rastatech.secretrasta.repository.UserRepository;
+import com.rastatech.secretrasta.security.JwtUtilities;
 import com.rastatech.secretrasta.service.RoleService;
 import com.rastatech.secretrasta.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -50,6 +51,7 @@ public class AuthController {
     private final UserService userService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtilities jwtUtilities;
 
     @PostMapping("/signup")
     @ApiOperation(value = "Create a user and store in database",
@@ -82,17 +84,10 @@ public class AuthController {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-                JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(refresh_token);
+                DecodedJWT decodedJWT = jwtUtilities.decodeJWT(authorizationHeader);
                 String username = decodedJWT.getSubject();
                 UserEntity user = userService.fetchUserByUsername(username);
-                String access_token = JWT.create()
-                        .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                        .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
-                        .sign(algorithm);
+                String access_token = jwtUtilities.buildAccessJwt(user);
                 Map<String, String> tokens = new HashMap<>();
                 tokens.put("access_token", access_token);
                 tokens.put("refresh_token", refresh_token);
