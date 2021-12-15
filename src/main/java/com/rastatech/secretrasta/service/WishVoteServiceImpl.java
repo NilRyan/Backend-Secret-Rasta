@@ -34,6 +34,7 @@ public class WishVoteServiceImpl implements WishVoteService {
         VoteType voteType = vote.getVoteType();
 
         Optional<WishVoteEntity> existingVote = wishVoteRepository.findByWishAndUser(wish, user);
+        if (existingVote.isEmpty() && voteType == VoteType.NONE) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         if (existingVote.isEmpty()) {
             wishVote.setVoteType(voteType);
@@ -43,9 +44,9 @@ public class WishVoteServiceImpl implements WishVoteService {
         }
         else {
             WishVoteEntity voteExtracted = existingVote.get();
-            if (voteType != voteExtracted.getVoteType()) {
+            if (voteType != voteExtracted.getVoteType() && voteType != VoteType.NONE) {
                 fetchVote(voteExtracted.getVoteId()).setVoteType(voteType);
-            } else {
+            } else if (voteType == VoteType.NONE) {
                 deleteVote(wishId, voteExtracted.getVoteId());
             }
         }

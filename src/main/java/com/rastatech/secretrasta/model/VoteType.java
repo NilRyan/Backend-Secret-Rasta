@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 
 public enum VoteType {
-    UPVOTE(1), DOWNVOTE(-1),
+    UPVOTE(0), DOWNVOTE(1), NONE(2)
     ;
 
     private int direction;
