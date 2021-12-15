@@ -65,14 +65,14 @@ public class WishesController {
 
     }
 
-    @GetMapping("/donators/{wish_id}")
+    @GetMapping("/{wish_id}/donators")
     @ApiOperation(value = "Fetch all donators of the wish",
             notes = "Use this api to fetch all donators of a wish")
     public List<WishDonatorsResponse> fetchDonatorsOfWish(@PathVariable("wish_id") Long wishId, @RequestParam Optional<Integer> page,
                                                           @RequestParam Optional<Integer> limit,
                                                           @RequestParam Optional<String> sort,
                                                           @RequestParam Optional<String> direction) {
-        Pageable pageable = getPageable(page, limit, sort, direction);
+        Pageable pageable = getPageable(page, limit, sort, direction, "transactionDate");
         List<DonationEntity> donators = donationService.fetchDonationsByWishId(wishId, pageable);
         return donators.stream().map(this::mapToWishDonatorsResponse).collect(Collectors.toList());
     }
@@ -196,6 +196,14 @@ public class WishesController {
                 limit.orElse(10),
                 sortDirection,
                 sort.orElse("updatedAt"));
+    }
+
+    private Pageable getPageable(Optional<Integer> page, Optional<Integer> limit, Optional<String> sort, Optional<String> direction, String initSortBy) {
+        Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);
+        return PageRequest.of(page.orElse(0),
+                limit.orElse(10),
+                sortDirection,
+                sort.orElse(initSortBy));
     }
 
     private WishResponse mapToWishResponse(WishEntity wish) {
