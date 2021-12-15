@@ -8,6 +8,7 @@ import com.rastatech.secretrasta.repository.DonationRepository;
 import com.rastatech.secretrasta.repository.UserRepository;
 import com.rastatech.secretrasta.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,6 +67,11 @@ public class DonationServiceImpl implements DonationService {
     @Override
     public List<DonationEntity> fetchReceivedDonationsByUser(String username) {
         return donationRepository.findByWish_User_Username(username);
+    }
+
+    @Override
+    public List<DonationEntity> fetchDonationsByWishId(Long wishId, Pageable pageable) {
+        return donationRepository.findByWish_WishId(wishId, pageable);
     }
 
 //    @Override

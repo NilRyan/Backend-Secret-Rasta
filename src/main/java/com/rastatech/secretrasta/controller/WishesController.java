@@ -1,11 +1,14 @@
 package com.rastatech.secretrasta.controller;
 
 import com.rastatech.secretrasta.dto.request.UpdateWishRequest;
+import com.rastatech.secretrasta.dto.response.WishDonatorsResponse;
 import com.rastatech.secretrasta.dto.response.WishPageResponse;
 import com.rastatech.secretrasta.dto.request.WishRequest;
 import com.rastatech.secretrasta.dto.response.WishResponse;
 import com.rastatech.secretrasta.dto.response.WishesStatusResponse;
+import com.rastatech.secretrasta.model.DonationEntity;
 import com.rastatech.secretrasta.model.WishEntity;
+import com.rastatech.secretrasta.service.DonationService;
 import com.rastatech.secretrasta.service.UserService;
 import com.rastatech.secretrasta.service.WishService;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +35,7 @@ public class WishesController {
     private final ModelMapper modelMapper;
     private final WishService wishService;
     private final UserService userService;
+    private final DonationService donationService;
 
     @PostMapping
     @ApiOperation(value = "Create a wish and store in database",
@@ -59,6 +63,18 @@ public class WishesController {
         List<WishEntity> wishEntities = wishService.fetchWishes(userId, pageable);
         return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
 
+    }
+
+    @GetMapping("/{wish_id}/donators")
+    @ApiOperation(value = "Fetch all donators of the wish",
+            notes = "Use this api to fetch all donators of a wish")
+    public List<WishDonatorsResponse> fetchDonatorsOfWish(@PathVariable("wish_id") Long wishId, @RequestParam Optional<Integer> page,
+                                                          @RequestParam Optional<Integer> limit,
+                                                          @RequestParam Optional<String> sort,
+                                                          @RequestParam Optional<String> direction) {
+        Pageable pageable = getPageable(page, limit, sort, direction, "transactionDate");
+        List<DonationEntity> donators = donationService.fetchDonationsByWishId(wishId, pageable);
+        return donators.stream().map(this::mapToWishDonatorsResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/user/{user_id}")
@@ -182,6 +198,14 @@ public class WishesController {
                 sort.orElse("updatedAt"));
     }
 
+    private Pageable getPageable(Optional<Integer> page, Optional<Integer> limit, Optional<String> sort, Optional<String> direction, String initSortBy) {
+        Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);
+        return PageRequest.of(page.orElse(0),
+                limit.orElse(10),
+                sortDirection,
+                sort.orElse(initSortBy));
+    }
+
     private WishResponse mapToWishResponse(WishEntity wish) {
         return modelMapper.map(wish, WishResponse.class);
     }
@@ -190,5 +214,8 @@ public class WishesController {
         return modelMapper.map(wish, WishPageResponse.class);
     }
 
+    private WishDonatorsResponse mapToWishDonatorsResponse(DonationEntity donators) {
+        return modelMapper.map(donators, WishDonatorsResponse.class);
+    }
 }
 

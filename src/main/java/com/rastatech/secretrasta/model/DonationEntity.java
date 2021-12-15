@@ -32,4 +32,18 @@ public class DonationEntity {
 
     @CreationTimestamp
     private LocalDateTime transactionDate;
+
+    @Transient
+    private String donatorFullName;
+
+    @Transient
+    private String donatorUsername;
+
+    public String getDonatorFullName() {
+        return this.user.getFirstName() + " " + this.user.getLastName();
+    }
+
+    public String getDonatorUsername() {
+        return this.user.getUsername();
+    }
 }
