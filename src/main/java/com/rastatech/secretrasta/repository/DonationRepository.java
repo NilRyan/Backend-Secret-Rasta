@@ -16,4 +16,5 @@ public interface DonationRepository extends JpaRepository<DonationEntity, Long> 
 
     List<DonationEntity> findByUser_Username(String username);
     List<DonationEntity> findByWish_User_Username(String username);
+    List<DonationEntity> findByWish_WishId(Long wishId, Pageable pageable);
 }
