@@ -47,6 +47,8 @@ No tests yet. :(
 Swagger API docs @ <baseUrl>/swagger-ui.html#/
 
 ## ⛏️ Built Using <a name = "built_using"></a>
+- [Java](https://www.java.com/en/) - Language
+- [OpenJDK11](https://openjdk.java.net/projects/jdk/11/)
 - [PostgreSQL](https://www.postgresql.org/) - Database
 - ER Diagram
 <p align="center">
@@ -54,8 +56,7 @@ Swagger API docs @ <baseUrl>/swagger-ui.html#/
  <img src="https://user-images.githubusercontent.com/76242678/145715243-01b49f8c-6c2d-4f9c-b5f5-9771d00ec3bd.png" alt="ERD"></a>
 </p>
 - [Spring](https://spring.io/) - Server Framework with Spring Boot for AutoConfig <3
-- [Java](https://www.java.com/en/) - Language
-- [OpenJDK11](https://openjdk.java.net/projects/jdk/11/)
+
 
 ## ✍️ Authors <a name = "authors"></a>
 - [Philip John Calape](https://github.com/PCalape) - Most of the work
