@@ -6,10 +6,11 @@ import com.rastatech.secretrasta.model.WishEntity;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface WishService {
     WishEntity createWish(Long userId, WishRequest wish);
-    List<WishEntity> fetchWishes(Long userId, Pageable pageable);
+    List<WishEntity> fetchWishes(Optional<String> search, Long userId, Pageable pageable);
     List<WishEntity> fetchWishesByUser(Long userId, Pageable pageable);
     WishEntity fetchWish(Long wishId);
     void updateWish(Long wishId, UpdateWishRequest wish);

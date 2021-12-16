@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,8 +34,8 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishEntity> fetchWishes(Long userId, Pageable pageable) {
-        List<WishEntity> wishes = wishRepository.findByDeletedFalse(pageable);
+    public List<WishEntity> fetchWishes(Optional<String> search, Long userId, Pageable pageable) {
+        List<WishEntity> wishes = wishRepository.findByDeletedFalseAndWishNameContains(search.orElse(""), pageable);
         setIsLiked(userId, wishes);
         setVoteStatus(userId, wishes);
         return wishes;
