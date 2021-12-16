@@ -1,9 +1,9 @@
 package com.rastatech.secretrasta.controller;
 
 import com.rastatech.secretrasta.dto.request.UpdateWishRequest;
+import com.rastatech.secretrasta.dto.request.WishRequest;
 import com.rastatech.secretrasta.dto.response.WishDonatorsResponse;
 import com.rastatech.secretrasta.dto.response.WishPageResponse;
-import com.rastatech.secretrasta.dto.request.WishRequest;
 import com.rastatech.secretrasta.dto.response.WishResponse;
 import com.rastatech.secretrasta.dto.response.WishesStatusResponse;
 import com.rastatech.secretrasta.model.DonationEntity;
@@ -56,11 +56,12 @@ public class WishesController {
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> limit,
             @RequestParam Optional<String> sort,
-            @RequestParam Optional<String> direction, Authentication auth) {
+            @RequestParam Optional<String> direction,
+            @RequestParam Optional<String> search, Authentication auth) {
         Pageable pageable = getPageable(page, limit, sort, direction);
         String username = (String) auth.getPrincipal();
         Long userId = userService.fetchUserByUsername(username).getUserId();
-        List<WishEntity> wishEntities = wishService.fetchWishes(userId, pageable);
+        List<WishEntity> wishEntities = wishService.fetchWishes(search, userId, pageable);
         return wishEntities.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
 
     }
@@ -82,9 +83,9 @@ public class WishesController {
             notes = "Use this api to fetch all wishes of the specified user. You may provide details for pagination e.g. " +
                     "page number, limit per page, sort by field, and sort direction.")
     public List<WishPageResponse> fetchWishesByUser(@PathVariable("user_id") Long userId, @RequestParam Optional<Integer> page,
-                                                @RequestParam Optional<Integer> limit,
-                                                @RequestParam Optional<String> sort,
-                                                @RequestParam Optional<String> direction) {
+                                                    @RequestParam Optional<Integer> limit,
+                                                    @RequestParam Optional<String> sort,
+                                                    @RequestParam Optional<String> direction) {
         Pageable pageable = getPageable(page, limit, sort, direction);
         List<WishEntity> wishes = wishService.fetchWishesByUser(userId, pageable);
         return wishes.stream().map(this::mapToWishPageResponse).collect(Collectors.toList());
@@ -140,7 +141,6 @@ public class WishesController {
     }
 
 
-
     @GetMapping("/liked/{user_id}")
     @ApiOperation(value = "Fetch all wishes liked by the specified user",
             notes = "Use this api to fetch all wishes liked by the specified user. You may provide details for pagination e.g. " +
@@ -187,7 +187,6 @@ public class WishesController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         wishService.deleteWish(wishId);
     }
-
 
 
     private Pageable getPageable(Optional<Integer> page, Optional<Integer> limit, Optional<String> sort, Optional<String> direction) {
