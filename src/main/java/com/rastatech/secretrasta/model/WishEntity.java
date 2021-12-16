@@ -64,6 +64,9 @@ public class WishEntity {
     private String wishOwnerUsername;
 
     @Transient
+    private Long wishOwnerId;
+
+    @Transient
     private String voteStatus;
 
     @Transient
@@ -75,6 +78,10 @@ public class WishEntity {
     @Formula("(SELECT COUNT(v.vote_type) FROM wish_votes v WHERE v.vote_type = 1 AND v.wish_wish_id = wish_id)")
     private int downvotes;
 
+
+    public Long getWishOwnerId() {
+        return this.user.getUserId();
+    }
 
     public String getWishOwnerUsername() {
         return this.user.getUsername();

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,8 +34,8 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishEntity> fetchWishes(Long userId, Pageable pageable) {
-        List<WishEntity> wishes = wishRepository.findByDeletedFalse(pageable);
+    public List<WishEntity> fetchWishes(Optional<String> search, Long userId, Pageable pageable) {
+        List<WishEntity> wishes = wishRepository.findByDeletedFalseAndWishNameContains(search.orElse(""), pageable);
         setIsLiked(userId, wishes);
         setVoteStatus(userId, wishes);
         return wishes;
@@ -57,6 +58,8 @@ public class WishServiceImpl implements WishService {
     @Override
     public void updateWish(Long wishId, UpdateWishRequest wish) {
         WishEntity wishEntity = wishRepository.findById(wishId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (wish.getRastagemsRequired() != null && wish.getRastagemsRequired() <= wishEntity.getRastagemsDonated())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         modelMapper.map(wish, wishEntity);
         wishRepository.save(wishEntity);
     }
@@ -76,10 +79,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishEntity> fetchWishesFulfilledByUser(Long userId, Pageable pageable) {
-        List<WishEntity> grantedUserWishes = fetchWishesByUser(userId, pageable)
-                .stream()
-                .filter(wish -> wish.getRastagemsDonated() == wish.getRastagemsRequired())
-                .collect(Collectors.toList());
+        List<WishEntity> grantedUserWishes = wishRepository.findFulfilledWishesByUserId(userId, pageable);
         setIsLiked(userId, grantedUserWishes);
         setVoteStatus(userId, grantedUserWishes);
         return grantedUserWishes;
@@ -121,10 +121,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishEntity> fetchActiveWishesByUser(Long userId, Pageable pageable) {
-        List<WishEntity> activeWishes = fetchWishesByUser(userId, pageable)
-                .stream()
-                .filter(wish -> wish.getRastagemsDonated() != wish.getRastagemsRequired())
-                .collect(Collectors.toList());
+        List<WishEntity> activeWishes = wishRepository.findActiveWishesByUserId(userId, pageable);
         setIsLiked(userId, activeWishes);
         setVoteStatus(userId, activeWishes);
         return activeWishes;

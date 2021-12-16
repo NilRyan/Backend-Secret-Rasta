@@ -1,4 +1,4 @@
-package com.rastatech.secretrasta.dto.request;
+package com.rastatech.secretrasta.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -6,17 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UpdateWishRequest {
-    private String wishName;
-    private String imageUrl;
-    private String description;
+public class WishDonatorsResponse {
 
-    @Min(1)
-    private Integer rastagemsRequired;
+    private int amount;
+    private String donatorFullName;
+    private String donatorUsername;
 }

@@ -15,7 +15,13 @@ import java.util.List;
 public interface WishRepository extends CrudRepository<WishEntity, Long> {
     List<WishEntity> findByUserAndDeletedFalse(UserEntity user, Pageable pageable);
     List<WishEntity> findByUser_UserId(Long userId);
-    List<WishEntity> findByDeletedFalse(Pageable pageable);
+    List<WishEntity> findByDeletedFalseAndWishNameContains(String search, Pageable pageable);
     List<WishEntity> findByLikes_User_UserIdAndDeletedFalse(Long userId, Pageable pageable);
     List<WishEntity> findDistinctByDonations_User_UserIdAndDeletedFalse(Long userId, Pageable pageable);
+    @Query("SELECT w FROM WishEntity w WHERE w.rastagemsDonated < w.rastagemsRequired AND w.user.userId = ?1")
+    List<WishEntity> findActiveWishesByUserId(Long userId, Pageable pageable);
+
+    @Query("SELECT w FROM WishEntity w WHERE w.rastagemsDonated = w.rastagemsRequired AND w.user.userId = ?1")
+    List<WishEntity> findFulfilledWishesByUserId(Long userId, Pageable pageable);
+
 }
