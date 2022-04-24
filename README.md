@@ -22,7 +22,8 @@
 - [Acknowledgments](#acknowledgement)
 
 ## 🧐 About <a name = "about"></a>
-The true Christmas spirit is putting others' happiness before our own, and finding you've never known such happiness. Make someone's day, be a Secret Rasta.
+<!-- The true Christmas spirit is putting others' happiness before our own, and finding you've never known such happiness. Make someone's day, be a Secret Rasta. -->
+Just a CRUD application
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
